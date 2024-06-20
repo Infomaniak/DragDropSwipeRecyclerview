@@ -5,11 +5,16 @@ apply plugin: 'maven-publish'
 android {
     compileSdk 34
 
+    rootProject.ext {
+        minSdk = 21
+        targetSdk = 34
+        javaVersion = JavaVersion.VERSION_17
+    }
+
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 34
+        minSdkVersion rootProject.ext.minSdk
+        targetSdkVersion rootProject.ext.targetSdk
         versionCode 19
-        versionName '1.2.0'
     }
 
     buildTypes {
@@ -20,8 +25,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility rootProject.ext.javaVersion
+        targetCompatibility rootProject.ext.javaVersion
     }
 
     publishing {
