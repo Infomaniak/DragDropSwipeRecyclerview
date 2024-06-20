@@ -9,7 +9,8 @@ import com.infomaniak.dragdropswiperecyclerview.DragDropSwipeAdapter
 import com.infomaniak.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.infomaniak.dragdropswiperecyclerview.DragDropSwipeRecyclerView.ListOrientation
 
-internal class DragDropSwipeItemDecoration(var divider: Drawable) : RecyclerView.ItemDecoration() {
+internal class DragDropSwipeItemDecoration(var divider: Drawable) :
+    RecyclerView.ItemDecoration() {
 
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         if (parent is DragDropSwipeRecyclerView) {
@@ -78,7 +79,7 @@ internal class DragDropSwipeItemDecoration(var divider: Drawable) : RecyclerView
                     null -> {}
                 }
             }
-        } else throw TypeCastException("The recycler view must be an extension of DragDropSwipeRecyclerView.")
+        } else throw TypeCastException("The recycler view must be an extension of AsyncSwipeRecyclerView.")
     }
 
     private fun itemIsBeingMoved(parent: RecyclerView, child: View): Boolean {

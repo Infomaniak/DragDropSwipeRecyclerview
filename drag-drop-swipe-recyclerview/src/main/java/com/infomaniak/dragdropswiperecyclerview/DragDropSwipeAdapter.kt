@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
@@ -29,7 +29,7 @@ import kotlin.math.abs
  * @param U The type of the view holder.
  * @property dataSet The data set.
  */
-abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
+abstract class DragDropSwipeAdapter<T : Any, U : DragDropSwipeAdapter.ViewHolder>(
     dataSet: List<T> = emptyList()
 ) : RecyclerView.Adapter<U>() {
 
@@ -40,14 +40,10 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         get() = mutableDataSet
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
-            val diffUtil = createDiffUtil(mutableDataSet, value)
+            val asyncListDiffer = createAsyncListDiffer()
             mutableDataSet = value.toMutableList()
-            if (diffUtil != null) {
-                val diffResult = DiffUtil.calculateDiff(diffUtil)
-                diffResult.dispatchUpdatesTo(this)
-            } else {
-                notifyDataSetChanged()
-            }
+
+            asyncListDiffer?.submitList(mutableDataSet)
         }
 
     private val orientation: DragDropSwipeRecyclerView.ListOrientation
@@ -111,14 +107,9 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
      * If it returns null, no difference between the old items and the new ones will be calculated.
      * Null by default.
      *
-     * @param oldList The old list of items.
-     * @param newList The new list of items.
      * @return The implementation of DragDropSwipeDiffCallback<T> that will be used to compare items, if any.
      */
-    protected open fun createDiffUtil(
-        oldList: List<T>,
-        newList: List<T>
-    ): DragDropSwipeDiffCallback<T>? = null
+    protected open fun createAsyncListDiffer(): AsyncListDiffer<T>? = null
 
     /**
      * Called automatically to know if the specified item can be dragged.
@@ -330,29 +321,30 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         }
     }
 
-    private val stateChangeListener = object : DragDropSwipeTouchHelper.OnItemStateChangeListener {
-        @Suppress("UNCHECKED_CAST")
-        override fun onStateChanged(
-            newState: DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType,
-            viewHolder: RecyclerView.ViewHolder
-        ) {
+    private val stateChangeListener =
+        object : DragDropSwipeTouchHelper.OnItemStateChangeListener {
+            @Suppress("UNCHECKED_CAST")
+            override fun onStateChanged(
+                newState: DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType,
+                viewHolder: RecyclerView.ViewHolder
+            ) {
 
-            val dragDropSwipeViewHolder = viewHolder as U
-            when (newState) {
-                DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.DRAG_STARTED ->
-                    onDragStartedImpl(dragDropSwipeViewHolder)
+                val dragDropSwipeViewHolder = viewHolder as U
+                when (newState) {
+                    DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.DRAG_STARTED ->
+                        onDragStartedImpl(dragDropSwipeViewHolder)
 
-                DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.DRAG_FINISHED ->
-                    onDragFinishedImpl(dragDropSwipeViewHolder)
+                    DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.DRAG_FINISHED ->
+                        onDragFinishedImpl(dragDropSwipeViewHolder)
 
-                DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.SWIPE_STARTED ->
-                    onSwipeStartedImpl(dragDropSwipeViewHolder)
+                    DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.SWIPE_STARTED ->
+                        onSwipeStartedImpl(dragDropSwipeViewHolder)
 
-                DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.SWIPE_FINISHED ->
-                    onSwipeFinishedImpl(dragDropSwipeViewHolder)
+                    DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.SWIPE_FINISHED ->
+                        onSwipeFinishedImpl(dragDropSwipeViewHolder)
+                }
             }
         }
-    }
 
     private val itemLayoutPositionListener =
         object : DragDropSwipeTouchHelper.OnItemLayoutPositionChangeListener {
