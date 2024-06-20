@@ -863,48 +863,20 @@ abstract class DragDropSwipeAdapter<T : Any, U : DragDropSwipeAdapter.ViewHolder
         alpha: Float? = null
     ) {
 
-        list.dividerDrawable?.let { dividerDrawable ->
+        list.dividerDrawable?.let {
             when (orientation) {
                 DragDropSwipeRecyclerView.ListOrientation.VERTICAL_LIST_WITH_VERTICAL_DRAGGING,
                 DragDropSwipeRecyclerView.ListOrientation.VERTICAL_LIST_WITH_UNCONSTRAINED_DRAGGING ->
-                    drawHorizontalDividers(
-                        viewHolder.itemView,
-                        canvasOver,
-                        dividerDrawable,
-                        left,
-                        right,
-                        alpha = alpha
-                    )
+                    drawHorizontalDividers(viewHolder.itemView, canvasOver, it, left, right, alpha)
 
                 DragDropSwipeRecyclerView.ListOrientation.HORIZONTAL_LIST_WITH_UNCONSTRAINED_DRAGGING,
                 DragDropSwipeRecyclerView.ListOrientation.HORIZONTAL_LIST_WITH_HORIZONTAL_DRAGGING ->
-                    drawVerticalDividers(
-                        viewHolder.itemView,
-                        canvasOver,
-                        dividerDrawable,
-                        top,
-                        bottom,
-                        alpha = alpha
-                    )
+                    drawVerticalDividers(viewHolder.itemView, canvasOver, it, top, bottom, alpha)
 
                 DragDropSwipeRecyclerView.ListOrientation.GRID_LIST_WITH_HORIZONTAL_SWIPING,
                 DragDropSwipeRecyclerView.ListOrientation.GRID_LIST_WITH_VERTICAL_SWIPING -> {
-                    drawHorizontalDividers(
-                        viewHolder.itemView,
-                        canvasOver,
-                        dividerDrawable,
-                        left,
-                        right,
-                        alpha = alpha
-                    )
-                    drawVerticalDividers(
-                        viewHolder.itemView,
-                        canvasOver,
-                        dividerDrawable,
-                        top,
-                        bottom,
-                        alpha = alpha
-                    )
+                    drawHorizontalDividers(viewHolder.itemView, canvasOver, it, left, right, alpha)
+                    drawVerticalDividers(viewHolder.itemView, canvasOver, it, top, bottom, alpha)
                 }
             }
         }
