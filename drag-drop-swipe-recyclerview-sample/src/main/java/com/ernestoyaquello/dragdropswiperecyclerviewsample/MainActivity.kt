@@ -2,11 +2,11 @@ package com.ernestoyaquello.dragdropswiperecyclerviewsample
 
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.Fragment
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.config.local.ListFragmentType
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.config.local.currentListFragmentType
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.data.source.IceCreamRepository
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         navigateToLogFragment()
     }
 
-    private val onLogUpdatedListener = object: Logger.OnLogUpdateListener {
+    private val onLogUpdatedListener = object : Logger.OnLogUpdateListener {
         override fun onLogUpdated() = refreshLogButtonText()
     }
 
@@ -120,17 +120,28 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         supportActionBar?.setHomeButtonEnabled(false)
         binding.seeLogButton.visibility = View.VISIBLE
-        binding.fab.setImageDrawable(AppCompatResources.getDrawable(applicationContext, R.drawable.ic_new_item))
+        binding.fab.setImageDrawable(
+            AppCompatResources.getDrawable(
+                applicationContext,
+                R.drawable.ic_new_item
+            )
+        )
     }
 
     private fun onNavigatedToLogFragment() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
         binding.seeLogButton.visibility = View.GONE
-        binding.fab.setImageDrawable(AppCompatResources.getDrawable(applicationContext, R.drawable.ic_clear_items))
+        binding.fab.setImageDrawable(
+            AppCompatResources.getDrawable(
+                applicationContext,
+                R.drawable.ic_clear_items
+            )
+        )
     }
 
-    private fun isLogFragmentOpen() = supportFragmentManager.findFragmentByTag(LogFragment.TAG) != null
+    private fun isLogFragmentOpen() =
+        supportFragmentManager.findFragmentByTag(LogFragment.TAG) != null
 
     private fun replaceFragment(fragment: Fragment, tag: String) {
         supportFragmentManager.beginTransaction().apply {
@@ -149,6 +160,7 @@ class MainActivity : AppCompatActivity() {
 
                 super.onOptionsItemSelected(item)
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

@@ -3,8 +3,8 @@ package com.ernestoyaquello.dragdropswiperecyclerview.util
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeAdapter
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView.ListOrientation
@@ -45,7 +45,12 @@ internal class DragDropSwipeItemDecoration(var divider: Drawable) : RecyclerView
         } else throw TypeCastException("The recycler view must be an extension of DragDropSwipeRecyclerView.")
     }
 
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
         super.getItemOffsets(outRect, view, parent, state)
 
         if (parent is DragDropSwipeRecyclerView) {

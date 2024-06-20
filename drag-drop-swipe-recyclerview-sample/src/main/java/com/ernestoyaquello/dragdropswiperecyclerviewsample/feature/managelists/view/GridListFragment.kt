@@ -33,7 +33,8 @@ class GridListFragment : BaseListFragment() {
         // It is necessary to set the orientation in code so the list can work correctly.
         // Horizontal swiping is specified because this grid list is vertically scrollable.
         // For horizontally scrollable grid lists, vertical swiping should be used instead.
-        list.orientation = DragDropSwipeRecyclerView.ListOrientation.GRID_LIST_WITH_HORIZONTAL_SWIPING
+        list.orientation =
+            DragDropSwipeRecyclerView.ListOrientation.GRID_LIST_WITH_HORIZONTAL_SWIPING
 
         // We set this property to stop the grid list from drawing top dividers in the first row
         list.numOfColumnsPerRowInGridList = numberOfColumns
@@ -93,10 +94,12 @@ class GridListFragment : BaseListFragment() {
                 list.behindSwipedItemIconSecondaryDrawableId = R.drawable.ic_archive_item
 
                 // In XML: app:behind_swiped_item_bg_color="@color/swipeBehindBackground"
-                list.behindSwipedItemBackgroundColor = ContextCompat.getColor(currentContext, R.color.swipeBehindBackground)
+                list.behindSwipedItemBackgroundColor =
+                    ContextCompat.getColor(currentContext, R.color.swipeBehindBackground)
 
                 // In XML: app:behind_swiped_item_bg_color_secondary="@color/swipeBehindBackgroundSecondary"
-                list.behindSwipedItemBackgroundSecondaryColor = ContextCompat.getColor(currentContext, R.color.swipeBehindBackgroundSecondary)
+                list.behindSwipedItemBackgroundSecondaryColor =
+                    ContextCompat.getColor(currentContext, R.color.swipeBehindBackgroundSecondary)
 
                 // In XML: app:behind_swiped_item_icon_margin="@dimen/spacing_normal"
                 list.behindSwipedItemIconMargin = resources.getDimension(R.dimen.spacing_normal)
