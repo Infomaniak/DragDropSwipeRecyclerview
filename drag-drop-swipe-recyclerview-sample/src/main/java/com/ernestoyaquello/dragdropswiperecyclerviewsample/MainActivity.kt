@@ -1,7 +1,6 @@
 package com.ernestoyaquello.dragdropswiperecyclerviewsample
 
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
@@ -53,8 +52,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.elevation = 0f
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            window.navigationBarColor = Color.BLACK
+        window.navigationBarColor = Color.BLACK
 
         setupLog()
         setupBottomNavigation()
