@@ -9,8 +9,7 @@ import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeAdapter
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView.ListOrientation
 
-internal class DragDropSwipeItemDecoration(var divider: Drawable) :
-    RecyclerView.ItemDecoration() {
+internal class DragDropSwipeItemDecoration(var divider: Drawable) : RecyclerView.ItemDecoration() {
 
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         if (parent is DragDropSwipeRecyclerView) {
