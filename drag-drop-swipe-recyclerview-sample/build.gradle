@@ -5,7 +5,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.ernestoyaquello.dragdropswiperecyclerviewsample"
+        applicationId "com.github.infomaniak.dragdropswiperecyclerviewsample"
         minSdkVersion rootProject.ext.minSdk
         targetSdkVersion rootProject.ext.targetSdk
         versionCode 1
@@ -28,7 +28,7 @@ android {
         targetCompatibility rootProject.ext.javaVersion
     }
 
-    namespace 'com.ernestoyaquello.dragdropswiperecyclerviewsample'
+    namespace 'com.github.infomaniak.dragdropswiperecyclerviewsample'
 }
 
 dependencies {

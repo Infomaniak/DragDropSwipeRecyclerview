@@ -36,7 +36,7 @@ android {
         }
     }
 
-    namespace 'com.ernestoyaquello.dragdropswiperecyclerview'
+    namespace 'com.github.infomaniak.dragdropswiperecyclerview'
 }
 
 dependencies {
@@ -45,9 +45,7 @@ dependencies {
 }
 
 ext {
-    PUBLISH_GROUP_ID = 'com.ernestoyaquello.dragdropswiperecyclerview'
+    PUBLISH_GROUP_ID = 'com.github.infomaniak.dragdropswiperecyclerview'
     PUBLISH_ARTIFACT_ID = 'drag-drop-swipe-recyclerview'
     PUBLISH_VERSION = android.defaultConfig.versionName
 }
-
-apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"

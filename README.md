@@ -1,60 +1,66 @@
 # Drag & Drop n' Swipe Recyclerview
-[![issues](https://img.shields.io/github/issues/ernestoyaquello/DragDropSwipeRecyclerview?style=for-the-badge)](https://github.com/ernestoyaquello/DragDropSwipeRecyclerview/issues)
-[![pull requests](https://img.shields.io/github/issues-pr/ernestoyaquello/DragDropSwipeRecyclerview?style=for-the-badge)](https://github.com/ernestoyaquello/DragDropSwipeRecyclerview/pulls)
-[![contributors](https://img.shields.io/github/contributors/ernestoyaquello/DragDropSwipeRecyclerview?style=for-the-badge)](https://github.com/ernestoyaquello/DragDropSwipeRecyclerview/graphs/contributors)
 
-Highly customizable Android library written in Kotlin that uses AndroidX and extends `RecyclerView` to include extra features, such as support for *drag & drop* and *swipe* gestures, among others. It works with vertical, horizontal and grid lists.
+[![issues](https://img.shields.io/github/issues/Infomaniak/DragDropSwipeRecyclerview?style=for-the-badge)](https://github.com/Infomaniak/DragDropSwipeRecyclerview/issues)
+[![pull requests](https://img.shields.io/github/issues-pr/Infomaniak/DragDropSwipeRecyclerview?style=for-the-badge)](https://github.com/Infomaniak/DragDropSwipeRecyclerview/pulls)
+[![contributors](https://img.shields.io/github/contributors/Infomaniak/DragDropSwipeRecyclerview?style=for-the-badge)](https://github.com/Infomaniak/DragDropSwipeRecyclerview/graphs/contributors)
+
+Highly customizable Android library written in Kotlin that uses AndroidX and extends `RecyclerView`
+to include extra features, such as support for *drag & drop* and *swipe* gestures, among others. It
+works with vertical, horizontal and grid lists.
 
 ## Demo
-![Drag & drop and swipe recycler view; demo with vertical list](https://raw.githubusercontent.com/ernestoyaquello/DragDropSwipeRecyclerview/master/readme/drag-drop-swipe-list-demo.gif)
 
-![Drag & drop and swipe recycler view; demo with grid list](https://raw.githubusercontent.com/ernestoyaquello/DragDropSwipeRecyclerview/master/readme/drag-drop-swipe-list-demo2.gif)
+![Drag & drop and swipe recycler view; demo with vertical list](https://raw.githubusercontent.com/Infomaniak/DragDropSwipeRecyclerview/master/readme/drag-drop-swipe-list-demo.gif)
 
-## Support this library
-The creation (and maintenance) of this library requires time and effort. If you find it useful and want to support it, please use the link below:
-
-[![Buy me a coffee!](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/ernestoyaquello)
+![Drag & drop and swipe recycler view; demo with grid list](https://raw.githubusercontent.com/Infomaniak/DragDropSwipeRecyclerview/master/readme/drag-drop-swipe-list-demo2.gif)
 
 ## How to use it
+
 ### 1. Reference the library
-Add the library to your project via `mavenCentral` by adding the following in the app's `build.gradle` file:
+
+Add the library to your project via `mavenCentral` by adding the following in the
+app's `build.gradle` file:
 
 ```
 dependencies {
     ...
-    implementation 'com.ernestoyaquello.dragdropswiperecyclerview:drag-drop-swipe-recyclerview:1.2.0'
+    implementation 'com.github.infomaniak.dragdropswiperecyclerview:drag-drop-swipe-recyclerview:1.2.0'
 }
 ```
 
-**NOTE**: Make sure you are using **AndroidX** instead of the old support libraries; otherwise this library might not work.
+**NOTE**: Make sure you are using **AndroidX** instead of the old support libraries; otherwise this
+library might not work.
 
 ### 2. Add the list to your layout
+
 Place the `DragDropSwipeRecyclerview` inside your layout using XML:
 
 ```xml
 <!-- layout/view_layout.xml -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:item_layout="@layout/list_item_layout"
-        app:divider="@drawable/list_divider"/>
+    <com.github.infomaniak.dragdropswiperecyclerview.DragDropSwipeRecyclerView
+        android:id="@+id/list" android:layout_width="match_parent"
+        android:layout_height="match_parent" app:item_layout="@layout/list_item_layout"
+        app:divider="@drawable/list_divider" />
 
 </FrameLayout>
 ```
 
-As you can see in the code above, **we specify the list item layout through the attribute `item_layout`**. This way, the library will take care of inflating the item layout automatically, so you won't have to do it manually in the adapter.
+As you can see in the code above, **we specify the list item layout through the
+attribute `item_layout`**. This way, the library will take care of inflating the item layout
+automatically, so you won't have to do it manually in the adapter.
 
-In addition, in this example you can also see that the optional attribute `divider` is being used to specify the drawable that will be displayed between list items (for more information about available attributes, see [**Customization**](#customization)).
+In addition, in this example you can also see that the optional attribute `divider` is being used to
+specify the drawable that will be displayed between list items (for more information about available
+attributes, see [**Customization**](#customization)).
 
 > #### Referenced resource files
-> Just in case they are of any help, these are the example resource files referenced in the code above:
-> 
+> Just in case they are of any help, these are the example resource files referenced in the code
+> above:
+>
 > ```xml
 > <!-- layout/list_item_layout.xml -->
 > <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -76,7 +82,7 @@ In addition, in this example you can also see that the optional attribute `divid
 >         android:src="@drawable/ic_drag"/>
 > </LinearLayout>
 > ```
-> 
+>
 > ```xml
 > <!-- drawable/list_divider.xml -->
 > <shape xmlns:android="http://schemas.android.com/apk/res/android"
@@ -85,7 +91,7 @@ In addition, in this example you can also see that the optional attribute `divid
 >     <solid android:color="#e1e1e1" />
 > </shape>
 > ```
-> 
+>
 > ```xml
 > <!-- drawable/ic_drag.xml -->
 > <vector xmlns:android="http://schemas.android.com/apk/res/android"
@@ -101,12 +107,14 @@ In addition, in this example you can also see that the optional attribute `divid
 
 ### 3. Create the adapter
 
-The next step is to implement your adapter (and viewholder) by **extending the class `DragDropSwipeAdapter<T, U>`**, where `T` will be your item type and `U` will be your viewholder type:
+The next step is to implement your adapter (and viewholder) by **extending the
+class `DragDropSwipeAdapter<T, U>`**, where `T` will be your item type and `U` will be your
+viewholder type:
 
 ```kotlin
-class MyAdapter(dataSet: List<String> = emptyList())
-    : DragDropSwipeAdapter<String, MyAdapter.ViewHolder>(dataSet) {
-    
+class MyAdapter(dataSet: List<String> = emptyList()) :
+    DragDropSwipeAdapter<String, MyAdapter.ViewHolder>(dataSet) {
+
     class ViewHolder(itemView: View) : DragDropSwipeAdapter.ViewHolder(itemView) {
         val itemText: TextView = itemView.findViewById(R.id.item_text)
         val dragIcon: ImageView = itemView.findViewById(R.id.drag_icon)
@@ -119,20 +127,28 @@ class MyAdapter(dataSet: List<String> = emptyList())
         viewHolder.itemText.text = item
     }
 
-    override fun getViewToTouchToStartDraggingItem(item: String, viewHolder: MyAdapter.ViewHolder, position: Int): View? {
+    override fun getViewToTouchToStartDraggingItem(
+        item: String,
+        viewHolder: MyAdapter.ViewHolder,
+        position: Int
+    ): View? {
         // We return the view holder's view on which the user has to touch to drag the item
-        return viewHolder.dragIcon 
+        return viewHolder.dragIcon
     }
 }
 ```
 
-This is just a basic implementation, but there are more methods in the adapter that you can override to customize the list and its behaviour (see [**Customization**](#customization)).
+This is just a basic implementation, but there are more methods in the adapter that you can override
+to customize the list and its behaviour (see [**Customization**](#customization)).
 
 ### 4. Setup the list
+
 Finally, you should setup the list to make it work and take advantage of its features.
 
 #### Set up the adapter
-Inside `onCreate` or `onCreateView`, find the list and set it with a layout manager and your adapter:
+
+Inside `onCreate` or `onCreateView`, find the list and set it with a layout manager and your
+adapter:
 
 ```kotlin
 val dataSet = listOf("Item 1", "Item 2", "Item 3")
@@ -144,6 +160,7 @@ mList.adapter = mAdapter
 ```
 
 #### Set up the orientation
+
 Then, specify the list orientation. For example:
 
 ```kotlin
@@ -151,41 +168,49 @@ mList.orientation = DragDropSwipeRecyclerView.ListOrientation.VERTICAL_LIST_WITH
 ```
 
 > ##### Using grid orientation with dividers
-> Take into account that if *and only if* you want to show dividers in a list with a grid orientation, you also need to set one of these two properties:
-> 
+> Take into account that if *and only if* you want to show dividers in a list with a grid
+> orientation, you also need to set one of these two properties:
+>
 > ```kotlin
 > // Set this property if your grid can be scrolled vertically
 > mList.numOfColumnsPerRowInGridList = <numberOfColumns>
 > ```
-> 
+>
 > Or:
-> 
+>
 > ```kotlin
 > // Set this property if your grid can be scrolled horizontally
 > mList.numOfRowsPerColumnInGridList = <numberOfRows>
 > ```
-> 
+>
 > ##### Restricting swiping and dragging directions
-> In case you want to disallow dragging or swiping actions in certain directions, you can do the following right after specifying the list orientation:
-> 
+> In case you want to disallow dragging or swiping actions in certain directions, you can do the
+> following right after specifying the list orientation:
+>
 > ```kotlin
 > // This disallows swiping items to the right
 > mList.disableSwipeDirection(ListOrientation.DirectionFlag.RIGHT)
 > ```
-> 
+>
 > Or:
-> 
+>
 > ```kotlin
 > // This disallows dragging items up
 > mList.disableDragDirection(ListOrientation.DirectionFlag.UP)
 > ```
 
 #### Set event listeners
-Finally, create event listeners for the events you want to handle. For example, these are the listeners for actions of *swiping*, *dragging & dropping* and *scrolling*:
+
+Finally, create event listeners for the events you want to handle. For example, these are the
+listeners for actions of *swiping*, *dragging & dropping* and *scrolling*:
 
 ```kotlin
 private val onItemSwipeListener = object : OnItemSwipeListener<String> {
-    override fun onItemSwiped(position: Int, direction: OnItemSwipeListener.SwipeDirection, item: String): Boolean {
+    override fun onItemSwiped(
+        position: Int,
+        direction: OnItemSwipeListener.SwipeDirection,
+        item: String
+    ): Boolean {
         // Handle action of item swiped
         // Return false to indicate that the swiped item should be removed from the adapter's data set (default behaviour)
         // Return true to stop the swiped item from being automatically removed from the adapter's data set (in this case, it will be your responsibility to manually update the data set as necessary)
@@ -208,7 +233,10 @@ private val onListScrollListener = object : OnListScrollListener {
         // Handle change on list scroll state
     }
 
-    override fun onListScrolled(scrollDirection: OnListScrollListener.ScrollDirection, distance: Int) {
+    override fun onListScrolled(
+        scrollDirection: OnListScrollListener.ScrollDirection,
+        distance: Int
+    ) {
         // Handle scrolling
     }
 }
@@ -225,26 +253,42 @@ mList.scrollListener = onListScrollListener
 **And that's it**! Your list with support for *swipe* and *drag & drop* should be fully working now.
 
 ## Updating the items
-### Without implementing `DiffUtil`
-The simplest way to update the items of your list is by setting the new list of items in the property `dataSet` of the adapter. This setter will take care of notifying the recyclerview about the changes, so all you need to do is set it.
 
-On the other hand, in case you want to apply small updates to the collection of items instead of replacing it entirely at once, please take a look at the convenience methods that the adapter offers, such as `addItem()`, `inserItem()`, `removeItem()`, and `moveItem()`. These methods will take care of notifying the recyclerview about the specific changes that have been applied to the data set, which will result in the correct animations being run.
+### Without implementing `DiffUtil`
+
+The simplest way to update the items of your list is by setting the new list of items in the
+property `dataSet` of the adapter. This setter will take care of notifying the recyclerview about
+the changes, so all you need to do is set it.
+
+On the other hand, in case you want to apply small updates to the collection of items instead of
+replacing it entirely at once, please take a look at the convenience methods that the adapter
+offers, such as `addItem()`, `inserItem()`, `removeItem()`, and `moveItem()`. These methods will
+take care of notifying the recyclerview about the specific changes that have been applied to the
+data set, which will result in the correct animations being run.
 
 ### Implementing `DiffUtil`
-In case you want to use `DiffUtil` to be able to replace the entire list of items while ensuring that the the correct animations are always run, please extend the class `DragDropSwipeDiffCallback`. Then, override the method `createDiffUtil()` of the adapter and make it return an instance of your implementation.
+
+In case you want to use `DiffUtil` to be able to replace the entire list of items while ensuring
+that the the correct animations are always run, please extend the class `DragDropSwipeDiffCallback`.
+Then, override the method `createDiffUtil()` of the adapter and make it return an instance of your
+implementation.
 
 ## Customization
-### DragDropSwipeRecyclerView customization
-There are several `XML` attributes that you can set in the `DragDropSwipeRecyclerView` in order to customize the style of the list and its items:
 
-![Drag & drop and swipe recycler view; available XML attributes](https://raw.githubusercontent.com/ernestoyaquello/DragDropSwipeRecyclerview/master/readme/drag-drop-swipe-item-customization.jpg)
+### DragDropSwipeRecyclerView customization
+
+There are several `XML` attributes that you can set in the `DragDropSwipeRecyclerView` in order to
+customize the style of the list and its items:
+
+![Drag & drop and swipe recycler view; available XML attributes](https://raw.githubusercontent.com/Infomaniak/DragDropSwipeRecyclerview/master/readme/drag-drop-swipe-item-customization.jpg)
 
 ---
 
 ##### `item_layout`
+
 The layout that will be used to populate each list item.
 
-> It can also be set in code doing 
+> It can also be set in code doing
 > ```kotlin
 > mList.itemLayoutId = R.layout.your_layout
 > ```
@@ -252,12 +296,17 @@ The layout that will be used to populate each list item.
 ---
 
 ##### `divider`
-The drawable that will be displayed as a divider between list items. If set to null, no divider will be drawn. Null by default.
 
-Please note that, for vertical lists, the divider drawable's height must be defined. In the same way, horizontal lists need a divider drawable with a defined width, and grid lists need a divider drawable with both width and height defined. Also note that **the divider should have no transparency** to be drawn correctly at all times.
+The drawable that will be displayed as a divider between list items. If set to null, no divider will
+be drawn. Null by default.
+
+Please note that, for vertical lists, the divider drawable's height must be defined. In the same
+way, horizontal lists need a divider drawable with a defined width, and grid lists need a divider
+drawable with both width and height defined. Also note that **the divider should have no
+transparency** to be drawn correctly at all times.
 
 > It can also be set in Kotlin:
-> 
+>
 > ```kotlin
 > mList.dividerDrawableId = R.drawable.your_divider
 > ```
@@ -265,12 +314,18 @@ Please note that, for vertical lists, the divider drawable's height must be defi
 ---
 
 ##### `behind_swiped_item_icon`
-The drawable of the icon to display behind an item that is being swiped in the default direction (i.e., left for horizontal swiping and down for vertical swiping). If set to null, no icon will be displayed behind swiped items. Null by default.
 
-Please note that if there is a secondary icon defined (i.e., if `behind_swiped_item_icon_secondary` is defined), this icon will only be displayed when swiping in the default direction (i.e., left or down). However, **if there isn't a secondary icon defined, this one will be displayed when swiping in any direction**.
+The drawable of the icon to display behind an item that is being swiped in the default direction (
+i.e., left for horizontal swiping and down for vertical swiping). If set to null, no icon will be
+displayed behind swiped items. Null by default.
+
+Please note that if there is a secondary icon defined (i.e., if `behind_swiped_item_icon_secondary`
+is defined), this icon will only be displayed when swiping in the default direction (i.e., left or
+down). However, **if there isn't a secondary icon defined, this one will be displayed when swiping
+in any direction**.
 
 > It can also be set in Kotlin:
-> 
+>
 > ```kotlin
 > mList.behindSwipedItemIconDrawableId = R.drawable.your_icon
 > ```
@@ -278,10 +333,13 @@ Please note that if there is a secondary icon defined (i.e., if `behind_swiped_i
 ---
 
 ##### `behind_swiped_item_icon_secondary`
-The drawable of the icon to display behind an item that is being swiped in the secondary direction (i.e., right for horizontal swiping and up for vertical swiping). If set to null, the main icon -if defined- will be the only one to be displayed in all swipe directions. Null by default.
+
+The drawable of the icon to display behind an item that is being swiped in the secondary direction (
+i.e., right for horizontal swiping and up for vertical swiping). If set to null, the main icon -if
+defined- will be the only one to be displayed in all swipe directions. Null by default.
 
 > It can also be set in Kotlin:
-> 
+>
 > ```kotlin
 > mList.behindSwipedItemIconSecondaryDrawableId = R.drawable.your_icon
 > ```
@@ -289,10 +347,13 @@ The drawable of the icon to display behind an item that is being swiped in the s
 ---
 
 ##### `behind_swiped_item_icon_margin`
-The distance between the icon displayed behind an item that is being swiped and the side of the item from which the swiping started. 0 if not specified; ignored if `behind_swiped_item_icon_centered` is true.
+
+The distance between the icon displayed behind an item that is being swiped and the side of the item
+from which the swiping started. 0 if not specified; ignored if `behind_swiped_item_icon_centered` is
+true.
 
 > It can also be set in Kotlin:
-> 
+>
 > ```kotlin
 > mList.behindSwipedItemIconMargin = <margin_value_as_float>
 > ```
@@ -300,10 +361,13 @@ The distance between the icon displayed behind an item that is being swiped and 
 ---
 
 ##### `behind_swiped_item_icon_centered`
-Determines whether the icon displayed behind an item that is being swiped should be centered. If true, the icon will be centered; if false, the icon will be displayed near the side from which the swiping started. False by default.
+
+Determines whether the icon displayed behind an item that is being swiped should be centered. If
+true, the icon will be centered; if false, the icon will be displayed near the side from which the
+swiping started. False by default.
 
 > It can also be set in Kotlin:
-> 
+>
 > ```kotlin
 > mList.behindSwipedItemCenterIcon = true
 > ```
@@ -311,12 +375,18 @@ Determines whether the icon displayed behind an item that is being swiped should
 ---
 
 ##### `behind_swiped_item_bg_color`
-The background color to be displayed behind an item that is being swiped in the default direction (i.e., left for horizontal swiping and down for vertical swiping). If set to null, no color will be displayed behind items that are being swiped. Null by default.
 
-Please note that if there is a secondary color defined (i.e., if `behind_swiped_item_bg_color_secondary` is defined), this one will only be displayed when swiping in the default direction (i.e., either left or down). However, **if there isn't a secondary color defined, it will be displayed when swiping in any direction**.
+The background color to be displayed behind an item that is being swiped in the default direction (
+i.e., left for horizontal swiping and down for vertical swiping). If set to null, no color will be
+displayed behind items that are being swiped. Null by default.
+
+Please note that if there is a secondary color defined (i.e.,
+if `behind_swiped_item_bg_color_secondary` is defined), this one will only be displayed when swiping
+in the default direction (i.e., either left or down). However, **if there isn't a secondary color
+defined, it will be displayed when swiping in any direction**.
 
 > It can also be set in Kotlin:
-> 
+>
 > ```kotlin
 > mList.behindSwipedItemBackgroundColor = <color_value_as_integer>
 > ```
@@ -324,10 +394,14 @@ Please note that if there is a secondary color defined (i.e., if `behind_swiped_
 ---
 
 ##### `behind_swiped_item_bg_color_secondary`
-The background color to be displayed behind an item that is being swiped in the secondary direction (i.e., right for horizontal swiping and up for vertical swiping). If set to null, the main background color -if defined- will be the only one to be displayed in all swipe directions. Null by default.
+
+The background color to be displayed behind an item that is being swiped in the secondary
+direction (i.e., right for horizontal swiping and up for vertical swiping). If set to null, the main
+background color -if defined- will be the only one to be displayed in all swipe directions. Null by
+default.
 
 > It can also be set in Kotlin:
-> 
+>
 > ```kotlin
 > mList.behindSwipedItemBackgroundSecondaryColor = <color_value_as_integer>
 > ```
@@ -335,10 +409,12 @@ The background color to be displayed behind an item that is being swiped in the 
 ---
 
 ##### `swiped_item_opacity_fades_on_swiping`
-Determines whether the item that is being swiped should appear more transparent the further it gets from its original position. False by default.
+
+Determines whether the item that is being swiped should appear more transparent the further it gets
+from its original position. False by default.
 
 > It can also be set in Kotlin:
-> 
+>
 > ```kotlin
 > mList.reduceItemAlphaOnSwiping = true
 > ```
@@ -346,10 +422,12 @@ Determines whether the item that is being swiped should appear more transparent 
 ---
 
 ##### `long_press_to_start_dragging`
-Determines whether the start of the dragging action will be triggered by a long press or by a standard one. True for long press; false for standard press. False by default.
+
+Determines whether the start of the dragging action will be triggered by a long press or by a
+standard one. True for long press; false for standard press. False by default.
 
 > It can also be set in Kotlin:
-> 
+>
 > ```kotlin
 > mList.longPressToStartDragging = true
 > ```
@@ -357,17 +435,24 @@ Determines whether the start of the dragging action will be triggered by a long 
 ---
 
 #### Customizing the swipe action using custom layouts
-In case you want to create your own layouts to display behind the swiped items, you can use these two attributes:
+
+In case you want to create your own layouts to display behind the swiped items, you can use these
+two attributes:
 
 ---
 
 ##### `behind_swiped_item_custom_layout`
-The custom layout to be displayed behind an item that is being swiped. If it is set to null, no custom layout will be displayed behind swiped items. Null by default.
 
-Please note that if there is a secondary layout defined (i.e., if `behind_swiped_item_custom_layout_secondary` is not null), this one will only be displayed when swiping in the default direction (i.e., either left or down). However, **if there isn't a secondary layout defined, this one will be displayed when swiping in any direction**.
+The custom layout to be displayed behind an item that is being swiped. If it is set to null, no
+custom layout will be displayed behind swiped items. Null by default.
+
+Please note that if there is a secondary layout defined (i.e.,
+if `behind_swiped_item_custom_layout_secondary` is not null), this one will only be displayed when
+swiping in the default direction (i.e., either left or down). However, **if there isn't a secondary
+layout defined, this one will be displayed when swiping in any direction**.
 
 > It can also be set in Kotlin:
-> 
+>
 > ```kotlin
 > mList.behindSwipedItemLayoutId = R.layout.your_custom_layout
 > ```
@@ -375,10 +460,13 @@ Please note that if there is a secondary layout defined (i.e., if `behind_swiped
 ---
 
 ##### `behind_swiped_item_custom_layout_secondary`
-The custom layout to be displayed behind an item that is being swiped in the secondary direction (i.e., right for horizontal swiping and up for vertical swiping). If set to null, the main custom layout -if defined- will be the only one to be displayed in all swipe directions. Null by default.
+
+The custom layout to be displayed behind an item that is being swiped in the secondary direction (
+i.e., right for horizontal swiping and up for vertical swiping). If set to null, the main custom
+layout -if defined- will be the only one to be displayed in all swipe directions. Null by default.
 
 > It can also be set in Kotlin:
-> 
+>
 > ```kotlin
 > mList.behindSwipedItemSecondaryLayoutId = R.layout.your_custom_layout
 > ```
@@ -386,20 +474,29 @@ The custom layout to be displayed behind an item that is being swiped in the sec
 ---
 
 ### Adapter customization
+
 #### Customizing the layout behind a swiped item
-Some of the adapter methods can be extended to customize the layout that will be displayed behind a specific item when swiped:
+
+Some of the adapter methods can be extended to customize the layout that will be displayed behind a
+specific item when swiped:
 
 ---
 
 ##### `getBehindSwipedItemLayoutId(item: T, viewHolder: U, position: Int): Int?`
-Called automatically to get the ID of the layout that will be displayed behind this specific item when swiped in the main direction (i.e., when swiped either left or down). If there isn't a secondary layout ID defined for this item, this one will also be displayed behind the item when swiped in the secondary direction (i.e., either right or up).
 
-If set, **the layout will be accessible for customization** inside `onBindViewHolder()` via `holder.behindSwipedItemLayout`.
+Called automatically to get the ID of the layout that will be displayed behind this specific item
+when swiped in the main direction (i.e., when swiped either left or down). If there isn't a
+secondary layout ID defined for this item, this one will also be displayed behind the item when
+swiped in the secondary direction (i.e., either right or up).
 
-If null, this will be ignored and the default *behind-swiped* layout of the list, if any, will be used. Null by default.
+If set, **the layout will be accessible for customization** inside `onBindViewHolder()`
+via `holder.behindSwipedItemLayout`.
+
+If null, this will be ignored and the default *behind-swiped* layout of the list, if any, will be
+used. Null by default.
 
 > **`item`** The item as read from the corresponding position of the data set.
-> 
+>
 > **`viewHolder`** The corresponding view holder.
 >
 > **`position`** The position of the item within the adapter's data set.
@@ -409,41 +506,52 @@ If null, this will be ignored and the default *behind-swiped* layout of the list
 ---
 
 ##### `getBehindSwipedItemSecondaryLayoutId(item: T, viewHolder: U, position: Int): Int?`
-Called automatically to get the ID of the layout that will be displayed behind this specific item when swiped in the secondary direction (i.e., when swiped either right or up).
 
-If set, **the layout will be accessible for customization** inside `onBindViewHolder()` via `holder.behindSwipedItemSecondaryLayout`.
+Called automatically to get the ID of the layout that will be displayed behind this specific item
+when swiped in the secondary direction (i.e., when swiped either right or up).
 
-If null, this will be ignored and the main *behind-swiped* layout of this item, if any, will be used. If there isn't one, the default *behind-swiped* layout of the list, if any, will be used. Null by default.
+If set, **the layout will be accessible for customization** inside `onBindViewHolder()`
+via `holder.behindSwipedItemSecondaryLayout`.
+
+If null, this will be ignored and the main *behind-swiped* layout of this item, if any, will be
+used. If there isn't one, the default *behind-swiped* layout of the list, if any, will be used. Null
+by default.
 
 > **`item`** The item as read from the corresponding position of the data set.
-> 
+>
 > **`viewHolder`** The corresponding view holder.
 >
 > **`position`** The position of the item within the adapter's data set.
 >
-> ***`returns`*** The ID of the layout that will be displayed behind this item when swiping it in the secondary direction.
+> ***`returns`*** The ID of the layout that will be displayed behind this item when swiping it in
+> the secondary direction.
 
 ---
 
 #### Customizing item behaviour
+
 Some of the adapter methods can be extended to customize the behaviour of the list items:
 
 ---
 
 ##### `getViewToTouchToStartDraggingItem(item: T, viewHolder: U, position: Int): View?`
-Called automatically to get the item view on which the user has to touch to drag the item. If it returns null, the main view of the item will be used for dragging.
+
+Called automatically to get the item view on which the user has to touch to drag the item. If it
+returns null, the main view of the item will be used for dragging.
 
 > **`item`** The item as read from the corresponding position of the data set.
-> 
+>
 > **`viewHolder`** The corresponding view holder.
 >
 > **`position`** The position of the item within the adapter's data set.
 >
-> ***`returns`*** The item view on which the user has to touch to drag the item, or null if the view of the item that will be used for dragging is the main one.
+> ***`returns`*** The item view on which the user has to touch to drag the item, or null if the view
+> of the item that will be used for dragging is the main one.
 
 ---
 
 ##### `canBeDragged(item: T, viewHolder: U, position: Int): Boolean`
+
 Called automatically to know if the specified item can be dragged.
 
 > **`item`** The item as read from the corresponding position of the data set.
@@ -457,6 +565,7 @@ Called automatically to know if the specified item can be dragged.
 ---
 
 ##### `canBeDroppedOver(item: T, viewHolder: U, position: Int): Boolean`
+
 Called automatically to know if the specified item accepts being exchanged by another one
 being dropped over it.
 
@@ -466,11 +575,13 @@ being dropped over it.
 >
 > **`position`** The position of the item within the adapter's data set.
 >
-> ***`returns`*** True if the item accepts to be exchanged with another one being dragged over it; false otherwise. True by default.
+> ***`returns`*** True if the item accepts to be exchanged with another one being dragged over it;
+> false otherwise. True by default.
 
 ---
 
 ##### `canBeSwiped(item: T, viewHolder: U, position: Int): Boolean`
+
 Called automatically to know if the specified item can be swiped.
 
 > **`item`** The item as read from the corresponding position of the data set.
@@ -484,13 +595,22 @@ Called automatically to know if the specified item can be swiped.
 ---
 
 #### Event Handling within the adapter
-Some of the adapter methods are callbacks that can be extended to customize the items after certain events, such as `DragStarted`, `SwipeStarted`, `IsDragging`, `IsSwiping`, `DragFinished`, `SwipeFinished`, etc. For example, you might want to update some of the item's views to change its appearance whenever the item is being dragged or swiped.
 
-On this regard, please note that these methods are intended for item customization only. **If you just want to be aware of the occurrence of basic list events (e.g., `onItemDragged`, `onItemDropped`, `onItemSwiped`), all you need to do is to subscribe to the listeners of the `DragDropSwipeRecyclerView`** (see above the section `How to use it`).
+Some of the adapter methods are callbacks that can be extended to customize the items after certain
+events, such
+as `DragStarted`, `SwipeStarted`, `IsDragging`, `IsSwiping`, `DragFinished`, `SwipeFinished`, etc.
+For example, you might want to update some of the item's views to change its appearance whenever the
+item is being dragged or swiped.
+
+On this regard, please note that these methods are intended for item customization only. **If you
+just want to be aware of the occurrence of basic list events (
+e.g., `onItemDragged`, `onItemDropped`, `onItemSwiped`), all you need to do is to subscribe to the
+listeners of the `DragDropSwipeRecyclerView`** (see above the section `How to use it`).
 
 ---
 
 ##### `onDragStarted(item: T, viewHolder: U)`
+
 Called when the dragging starts.
 
 > **`item`** The item as read from the corresponding position of the data set.
@@ -500,6 +620,7 @@ Called when the dragging starts.
 ---
 
 ##### `onSwipeStarted(item: T, viewHolder: U)`
+
 Called when the swiping starts.
 
 > **`item`** The item as read from the corresponding position of the data set.
@@ -509,28 +630,44 @@ Called when the swiping starts.
 ---
 
 ##### `onIsDragging(item: T?, viewHolder: U, offsetX: Int, offsetY: Int, canvasUnder: Canvas?, canvasOver: Canvas?, isUserControlled: Boolean)`
+
 Called when the dragging action (or animation) is occurring.
 
-> **`item`** The item as read from the corresponding position of the data set. It may be null in the unusual case when the dragged item is being momentaneously repositioned to an inexistent position by the system.
+> **`item`** The item as read from the corresponding position of the data set. It may be null in the
+> unusual case when the dragged item is being momentaneously repositioned to an inexistent position
+> by
+> the system.
 >
 > **`viewHolder`** The view holder for which the dragging action is occurring.
 >
-> **`offsetX`** The offset in the X axis caused by the horizontal movement of the item. This offset is the distance measured from the current position of the item, which may be a different position than the one the item initially had when the dragging action started (the position of an item can change while the item is being dragged).
+> **`offsetX`** The offset in the X axis caused by the horizontal movement of the item. This offset
+> is the distance measured from the current position of the item, which may be a different position
+> than the one the item initially had when the dragging action started (the position of an item can
+> change while the item is being dragged).
 >
-> **`offsetY`** The offset in the Y axis caused by the vertical movement of the item. This offset is the distance measured from the current position of the item, which may be a different position than the one the item initially had when the dragging action started (the position of an item can change while the item is being dragged).
+> **`offsetY`** The offset in the Y axis caused by the vertical movement of the item. This offset is
+> the distance measured from the current position of the item, which may be a different position
+> than
+> the one the item initially had when the dragging action started (the position of an item can
+> change
+> while the item is being dragged).
 >
 > **`canvasUnder`** A canvas positioned just in front of the recycler view and behind all its items.
 >
 > **`canvasOver`** A canvas positioned just in front of the recycler view and all its items.
 >
-> **`isUserControlled`** True if the item is still being controlled manually by the user; false if it is just being animated automatically by the system after the user has stopped touching it.
+> **`isUserControlled`** True if the item is still being controlled manually by the user; false if
+> it is just being animated automatically by the system after the user has stopped touching it.
 
 ---
 
 ##### `onIsSwiping(item: T?, viewHolder: U, offsetX: Int, offsetY: Int, canvasUnder: Canvas?, canvasOver: Canvas?, isUserControlled: Boolean)`
+
 Called when the swiping action (or animation) is occurring.
 
-> **`item`** The item as read from the corresponding position of the data set. It may be null if this method is being called because the item layout is still being animated by the system but the item itself has already been removed from the data set.
+> **`item`** The item as read from the corresponding position of the data set. It may be null if
+> this method is being called because the item layout is still being animated by the system but the
+> item itself has already been removed from the data set.
 >
 > **`viewHolder`** The view holder for which the swiping action is occurring.
 >
@@ -542,11 +679,17 @@ Called when the swiping action (or animation) is occurring.
 >
 > **`canvasOver`** A canvas positioned just in front of the recycler view and all its items.
 >
-> **`isUserControlled`** True if the item is still being controlled manually by the user; false if it is just being animated automatically by the system (which is usually the case when the system is finishing the swiping animation in order to move the item to its final position right after the user has already stopped touching it).
+> **`isUserControlled`** True if the item is still being controlled manually by the user; false if
+> it is just being animated automatically by the system (which is usually the case when the system
+> is
+> finishing the swiping animation in order to move the item to its final position right after the
+> user
+> has already stopped touching it).
 
 ---
 
 ##### `onDragFinished(item: T, viewHolder: U)`
+
 Called when the dragging finishes (i.e., when the item is dropped).
 
 > **`item`** The item as read from the corresponding position of the data set.
@@ -556,6 +699,7 @@ Called when the dragging finishes (i.e., when the item is dropped).
 ---
 
 ##### `onSwipeAnimationFinished(viewHolder: U)`
+
 Called when the swiping animation executed by the system to complete the swiping has finished.
 At the time this method gets called, the item has already been removed from the data set.
 
@@ -564,12 +708,16 @@ At the time this method gets called, the item has already been removed from the 
 ---
 
 ## Complete Example
-Check out the **Sample App** that is included in this repository: it has vertical lists, horizontal lists and grid lists, and it makes use of most of the library's features.
+
+Check out the **Sample App** that is included in this repository: it has vertical lists, horizontal
+lists and grid lists, and it makes use of most of the library's features.
 
 ## Contribution
+
 Feel free to contribute to this library, any help will be welcomed!
 
 ## License
+
 ```
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
