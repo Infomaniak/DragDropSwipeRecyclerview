@@ -3,9 +3,14 @@ package com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists.
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.fragment.app.Fragment
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemDragListener
@@ -42,10 +47,18 @@ abstract class BaseListFragment : Fragment() {
     protected abstract val optionsMenuId: Int
 
     private val onItemSwipeListener = object : OnItemSwipeListener<IceCream> {
-        override fun onItemSwiped(position: Int, direction: OnItemSwipeListener.SwipeDirection, item: IceCream): Boolean {
+        override fun onItemSwiped(
+            position: Int,
+            direction: OnItemSwipeListener.SwipeDirection,
+            item: IceCream
+        ): Boolean {
             when (direction) {
                 OnItemSwipeListener.SwipeDirection.RIGHT_TO_LEFT -> onItemSwipedLeft(item, position)
-                OnItemSwipeListener.SwipeDirection.LEFT_TO_RIGHT -> onItemSwipedRight(item, position)
+                OnItemSwipeListener.SwipeDirection.LEFT_TO_RIGHT -> onItemSwipedRight(
+                    item,
+                    position
+                )
+
                 OnItemSwipeListener.SwipeDirection.DOWN_TO_UP -> onItemSwipedUp(item, position)
                 OnItemSwipeListener.SwipeDirection.UP_TO_DOWN -> onItemSwipedDown(item, position)
             }
@@ -78,7 +91,10 @@ abstract class BaseListFragment : Fragment() {
             //Logger.log("List scroll state changed to $scrollState")
         }
 
-        override fun onListScrolled(scrollDirection: OnListScrollListener.ScrollDirection, distance: Int) {
+        override fun onListScrolled(
+            scrollDirection: OnListScrollListener.ScrollDirection,
+            distance: Int
+        ) {
             // Call commented out to avoid saturating the log
             //Logger.log("List scrolled $distance pixels $scrollDirection")
         }
@@ -105,12 +121,13 @@ abstract class BaseListFragment : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         // Set root view for the fragment and find the views
-        _binding = inflateViewBinding(inflater,container)
+        _binding = inflateViewBinding(inflater, container)
         list = binding.root.findViewById(R.id.list)
         loadingIndicator = binding.root.findViewById(R.id.loading_indicator)
 
@@ -135,7 +152,10 @@ abstract class BaseListFragment : Fragment() {
         _binding = null
     }
 
-    protected abstract fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?): ViewBinding
+    protected abstract fun inflateViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): ViewBinding
 
     protected abstract fun setupListLayoutManager(list: DragDropSwipeRecyclerView)
 
@@ -147,22 +167,27 @@ abstract class BaseListFragment : Fragment() {
 
     protected abstract fun setupFadeItemLayoutOnSwiping(list: DragDropSwipeRecyclerView)
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) = inflater.inflate(optionsMenuId, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
+        inflater.inflate(optionsMenuId, menu)
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
 
             R.id.change_item_layout ->
-                currentListFragmentConfig.isUsingStandardItemLayout = !currentListFragmentConfig.isUsingStandardItemLayout
+                currentListFragmentConfig.isUsingStandardItemLayout =
+                    !currentListFragmentConfig.isUsingStandardItemLayout
 
             R.id.change_dragging_restrictions ->
-                currentListFragmentConfig.isRestrictingDraggingDirections = !currentListFragmentConfig.isRestrictingDraggingDirections
+                currentListFragmentConfig.isRestrictingDraggingDirections =
+                    !currentListFragmentConfig.isRestrictingDraggingDirections
 
             R.id.enable_disable_drawing_behind ->
-                currentListFragmentConfig.isDrawingBehindSwipedItems = !currentListFragmentConfig.isDrawingBehindSwipedItems
+                currentListFragmentConfig.isDrawingBehindSwipedItems =
+                    !currentListFragmentConfig.isDrawingBehindSwipedItems
 
             R.id.enable_disable_fade_on_swiping ->
-                currentListFragmentConfig.isUsingFadeOnSwipedItems = !currentListFragmentConfig.isUsingFadeOnSwipedItems
+                currentListFragmentConfig.isUsingFadeOnSwipedItems =
+                    !currentListFragmentConfig.isUsingFadeOnSwipedItems
         }
 
         // Reload the whole fragment to apply the changes
@@ -197,31 +222,35 @@ abstract class BaseListFragment : Fragment() {
 
                 R.id.change_item_layout ->
                     menuItem.title = getString(
-                            if (currentListFragmentConfig.isUsingStandardItemLayout)
-                                R.string.action_use_card_view_item_layout
-                            else
-                                R.string.action_use_default_item_layout)
+                        if (currentListFragmentConfig.isUsingStandardItemLayout)
+                            R.string.action_use_card_view_item_layout
+                        else
+                            R.string.action_use_default_item_layout
+                    )
 
                 R.id.change_dragging_restrictions ->
                     menuItem.title = getString(
-                            if (currentListFragmentConfig.isRestrictingDraggingDirections)
-                                R.string.action_not_restrict_dragging
-                            else
-                                R.string.action_restrict_dragging)
+                        if (currentListFragmentConfig.isRestrictingDraggingDirections)
+                            R.string.action_not_restrict_dragging
+                        else
+                            R.string.action_restrict_dragging
+                    )
 
                 R.id.enable_disable_drawing_behind ->
                     menuItem.title = getString(
-                            if (currentListFragmentConfig.isDrawingBehindSwipedItems)
-                                R.string.action_not_draw_behind_swiped_items
-                            else
-                                R.string.action_draw_behind_swiped_items)
+                        if (currentListFragmentConfig.isDrawingBehindSwipedItems)
+                            R.string.action_not_draw_behind_swiped_items
+                        else
+                            R.string.action_draw_behind_swiped_items
+                    )
 
                 R.id.enable_disable_fade_on_swiping ->
                     menuItem.title = getString(
-                            if (currentListFragmentConfig.isUsingFadeOnSwipedItems)
-                                R.string.action_not_reduce_alpha_on_swiping
-                            else
-                                R.string.action_reduce_alpha_on_swiping)
+                        if (currentListFragmentConfig.isUsingFadeOnSwipedItems)
+                            R.string.action_not_reduce_alpha_on_swiping
+                        else
+                            R.string.action_reduce_alpha_on_swiping
+                    )
             }
         }
     }
@@ -298,7 +327,8 @@ abstract class BaseListFragment : Fragment() {
     private fun removeItemFromList(item: IceCream, position: Int, stringResourceId: Int) {
         repository.removeItem(item)
 
-        val itemSwipedSnackBar = Snackbar.make(binding.root, getString(stringResourceId, item), Snackbar.LENGTH_SHORT)
+        val itemSwipedSnackBar =
+            Snackbar.make(binding.root, getString(stringResourceId, item), Snackbar.LENGTH_SHORT)
         itemSwipedSnackBar.setAction(getString(R.string.undoCaps)) {
             Logger.log("UNDO: $item has been added back to the list in the position $position")
 

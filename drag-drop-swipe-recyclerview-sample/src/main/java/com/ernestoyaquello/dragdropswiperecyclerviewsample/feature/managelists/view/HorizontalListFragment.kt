@@ -93,7 +93,8 @@ class HorizontalListFragment : BaseListFragment() {
                 list.behindSwipedItemBackgroundColor = ContextCompat.getColor(currentContext, R.color.swipeBehindBackground)
 
                 // In XML: app:behind_swiped_item_bg_color_secondary="@color/swipeBehindBackgroundSecondary"
-                list.behindSwipedItemBackgroundSecondaryColor = ContextCompat.getColor(currentContext, R.color.swipeBehindBackgroundSecondary)
+                list.behindSwipedItemBackgroundSecondaryColor =
+                    ContextCompat.getColor(currentContext, R.color.swipeBehindBackgroundSecondary)
 
                 // In XML: app:behind_swiped_item_icon_centered="true"
                 list.behindSwipedItemCenterIcon = true

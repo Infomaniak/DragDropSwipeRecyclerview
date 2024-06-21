@@ -3,10 +3,10 @@ package com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelists
 import android.content.res.ColorStateList
 import android.graphics.Canvas
 import android.graphics.Color
-import androidx.core.widget.ImageViewCompat
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.widget.ImageViewCompat
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeAdapter
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.R
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.data.model.IceCream
@@ -15,8 +15,8 @@ import com.ernestoyaquello.dragdropswiperecyclerviewsample.util.Logger
 /**
  * Adapter for a list of ice creams.
  */
-class IceCreamListAdapter(dataSet: List<IceCream> = emptyList())
-    : DragDropSwipeAdapter<IceCream, IceCreamListAdapter.ViewHolder>(dataSet) {
+class IceCreamListAdapter(dataSet: List<IceCream> = emptyList()) :
+    DragDropSwipeAdapter<IceCream, IceCreamListAdapter.ViewHolder>(dataSet) {
 
     class ViewHolder(iceCreamLayout: View) : DragDropSwipeAdapter.ViewHolder(iceCreamLayout) {
         val iceCreamNameView: TextView = itemView.findViewById(R.id.ice_cream_name)
@@ -45,14 +45,21 @@ class IceCreamListAdapter(dataSet: List<IceCream> = emptyList())
         // Set the icon/image color
         if (viewHolder.iceCreamIcon != null) {
             val iceCreamIconColor = Color.rgb(red, green, blue)
-            ImageViewCompat.setImageTintList(viewHolder.iceCreamIcon, ColorStateList.valueOf(iceCreamIconColor))
+            ImageViewCompat.setImageTintList(
+                viewHolder.iceCreamIcon,
+                ColorStateList.valueOf(iceCreamIconColor)
+            )
         } else if (viewHolder.iceCreamPhotoFilter != null) {
             val iceCreamPhotoFilter = Color.argb(128, red, green, blue)
             viewHolder.iceCreamPhotoFilter.setBackgroundColor(iceCreamPhotoFilter)
         }
     }
 
-    override fun getViewToTouchToStartDraggingItem(item: IceCream, viewHolder: ViewHolder, position: Int) = viewHolder.dragIcon
+    override fun getViewToTouchToStartDraggingItem(
+        item: IceCream,
+        viewHolder: ViewHolder,
+        position: Int
+    ) = viewHolder.dragIcon
 
     override fun onDragStarted(item: IceCream, viewHolder: ViewHolder) {
         Logger.log("Dragging started on ${item.name}")
@@ -63,25 +70,27 @@ class IceCreamListAdapter(dataSet: List<IceCream> = emptyList())
     }
 
     override fun onIsDragging(
-            item: IceCream?,
-            viewHolder: ViewHolder,
-            offsetX: Int,
-            offsetY: Int,
-            canvasUnder: Canvas?,
-            canvasOver: Canvas?,
-            isUserControlled: Boolean) {
+        item: IceCream?,
+        viewHolder: ViewHolder,
+        offsetX: Int,
+        offsetY: Int,
+        canvasUnder: Canvas?,
+        canvasOver: Canvas?,
+        isUserControlled: Boolean
+    ) {
         // Call commented out to avoid saturating the log
         //Logger.log("The ${if (isUserControlled) "User" else "System"} is dragging ${item.name} (offset X: $offsetX, offset Y: $offsetY)")
     }
 
     override fun onIsSwiping(
-            item: IceCream?,
-            viewHolder: ViewHolder,
-            offsetX: Int,
-            offsetY: Int,
-            canvasUnder: Canvas?,
-            canvasOver: Canvas?,
-            isUserControlled: Boolean) {
+        item: IceCream?,
+        viewHolder: ViewHolder,
+        offsetX: Int,
+        offsetY: Int,
+        canvasUnder: Canvas?,
+        canvasOver: Canvas?,
+        isUserControlled: Boolean
+    ) {
         // Call commented out to avoid saturating the log
         //Logger.log("The ${if (isUserControlled) "User" else "System"} is swiping ${item?.name} (offset X: $offsetX, offset Y: $offsetY)")
     }

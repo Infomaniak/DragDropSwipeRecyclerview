@@ -3,7 +3,11 @@ package com.ernestoyaquello.dragdropswiperecyclerview
 import android.annotation.SuppressLint
 import android.graphics.Canvas
 import android.graphics.Color
-import android.view.*
+import android.view.GestureDetector
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +30,7 @@ import kotlin.math.abs
  * @property dataSet The data set.
  */
 abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
-        dataSet: List<T> = emptyList()
+    dataSet: List<T> = emptyList()
 ) : RecyclerView.Adapter<U>() {
 
     private var recyclerView: DragDropSwipeRecyclerView? = null
@@ -47,7 +51,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
 
     private val orientation: DragDropSwipeRecyclerView.ListOrientation
         get() = recyclerView?.orientation
-                ?: throw NullPointerException("The orientation of the DragDropSwipeRecyclerView is not defined.")
+            ?: throw NullPointerException("The orientation of the DragDropSwipeRecyclerView is not defined.")
 
     /**
      * The view holder abstract type whose implementation should be used in the implementation
@@ -94,7 +98,11 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
      * @return The item view on which the user has to touch to drag the item, or null if the view
      *         of the item that will be used for dragging is the main one.
      */
-    protected abstract fun getViewToTouchToStartDraggingItem(item: T, viewHolder: U, position: Int): View?
+    protected abstract fun getViewToTouchToStartDraggingItem(
+        item: T,
+        viewHolder: U,
+        position: Int
+    ): View?
 
     /**
      * Called automatically to get the DragDropSwipeDiffCallback<T> implementation that will be used
@@ -106,7 +114,10 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
      * @param newList The new list of items.
      * @return The implementation of DragDropSwipeDiffCallback<T> that will be used to compare items, if any.
      */
-    protected open fun createDiffUtil(oldList: List<T>, newList: List<T>) : DragDropSwipeDiffCallback<T>? = null
+    protected open fun createDiffUtil(
+        oldList: List<T>,
+        newList: List<T>
+    ): DragDropSwipeDiffCallback<T>? = null
 
     /**
      * Called automatically to know if the specified item can be dragged.
@@ -153,7 +164,8 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
      * @param position The position of the item within the adapter's data set.
      * @return The layout ID, or null.
      */
-    protected open fun getBehindSwipedItemLayoutId(item: T, viewHolder: U, position: Int): Int? = null
+    protected open fun getBehindSwipedItemLayoutId(item: T, viewHolder: U, position: Int): Int? =
+        null
 
     /**
      * Called automatically to get the ID of the layout that will be displayed behind this specific
@@ -167,7 +179,11 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
      * @param position The position of the item within the adapter's data set.
      * @return The layout ID, or null.
      */
-    protected open fun getBehindSwipedItemSecondaryLayoutId(item: T, viewHolder: U, position: Int): Int? = null
+    protected open fun getBehindSwipedItemSecondaryLayoutId(
+        item: T,
+        viewHolder: U,
+        position: Int
+    ): Int? = null
 
     /**
      * Called when the dragging starts.
@@ -211,13 +227,14 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
      *        stopped touching it.
      */
     protected open fun onIsDragging(
-            item: T?,
-            viewHolder: U,
-            offsetX: Int,
-            offsetY: Int,
-            canvasUnder: Canvas?,
-            canvasOver: Canvas?,
-            isUserControlled: Boolean) {
+        item: T?,
+        viewHolder: U,
+        offsetX: Int,
+        offsetY: Int,
+        canvasUnder: Canvas?,
+        canvasOver: Canvas?,
+        isUserControlled: Boolean
+    ) {
         // Do nothing in this method because it is up to the user of this library to implement or not
     }
 
@@ -238,13 +255,14 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
      *        its final position right after the user has already stopped touching it).
      */
     protected open fun onIsSwiping(
-            item: T?,
-            viewHolder: U,
-            offsetX: Int,
-            offsetY: Int,
-            canvasUnder: Canvas?,
-            canvasOver: Canvas?,
-            isUserControlled: Boolean) {
+        item: T?,
+        viewHolder: U,
+        offsetX: Int,
+        offsetY: Int,
+        canvasUnder: Canvas?,
+        canvasOver: Canvas?,
+        isUserControlled: Boolean
+    ) {
         // Do nothing in this method because it is up to the user of this library to implement or not
     }
 
@@ -314,51 +332,73 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     private val stateChangeListener = object : DragDropSwipeTouchHelper.OnItemStateChangeListener {
         @Suppress("UNCHECKED_CAST")
         override fun onStateChanged(
-                newState: DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType,
-                viewHolder: RecyclerView.ViewHolder) {
+            newState: DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType,
+            viewHolder: RecyclerView.ViewHolder
+        ) {
 
             val dragDropSwipeViewHolder = viewHolder as U
             when (newState) {
                 DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.DRAG_STARTED ->
                     onDragStartedImpl(dragDropSwipeViewHolder)
+
                 DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.DRAG_FINISHED ->
                     onDragFinishedImpl(dragDropSwipeViewHolder)
+
                 DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.SWIPE_STARTED ->
                     onSwipeStartedImpl(dragDropSwipeViewHolder)
+
                 DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.SWIPE_FINISHED ->
                     onSwipeFinishedImpl(dragDropSwipeViewHolder)
             }
         }
     }
 
-    private val itemLayoutPositionListener = object : DragDropSwipeTouchHelper.OnItemLayoutPositionChangeListener {
-        @Suppress("UNCHECKED_CAST")
-        override fun onPositionChanged(
+    private val itemLayoutPositionListener =
+        object : DragDropSwipeTouchHelper.OnItemLayoutPositionChangeListener {
+            @Suppress("UNCHECKED_CAST")
+            override fun onPositionChanged(
                 action: DragDropSwipeTouchHelper.OnItemLayoutPositionChangeListener.Action,
                 viewHolder: RecyclerView.ViewHolder,
                 offsetX: Int,
                 offsetY: Int,
                 canvasUnder: Canvas?,
                 canvasOver: Canvas?,
-                isUserControlled: Boolean) {
+                isUserControlled: Boolean
+            ) {
 
-            val dragDropSwipeViewHolder = viewHolder as U
-            when (action) {
-                DragDropSwipeTouchHelper.OnItemLayoutPositionChangeListener.Action.SWIPING ->
-                    onIsSwipingImpl(dragDropSwipeViewHolder, offsetX, offsetY, canvasUnder, canvasOver, isUserControlled)
-                DragDropSwipeTouchHelper.OnItemLayoutPositionChangeListener.Action.DRAGGING ->
-                    onIsDraggingImpl(dragDropSwipeViewHolder, offsetX, offsetY, canvasUnder, canvasOver, isUserControlled)
+                val dragDropSwipeViewHolder = viewHolder as U
+                when (action) {
+                    DragDropSwipeTouchHelper.OnItemLayoutPositionChangeListener.Action.SWIPING ->
+                        onIsSwipingImpl(
+                            dragDropSwipeViewHolder,
+                            offsetX,
+                            offsetY,
+                            canvasUnder,
+                            canvasOver,
+                            isUserControlled
+                        )
+
+                    DragDropSwipeTouchHelper.OnItemLayoutPositionChangeListener.Action.DRAGGING ->
+                        onIsDraggingImpl(
+                            dragDropSwipeViewHolder,
+                            offsetX,
+                            offsetY,
+                            canvasUnder,
+                            canvasOver,
+                            isUserControlled
+                        )
+                }
             }
         }
-    }
 
     init {
         swipeAndDragHelper = DragDropSwipeTouchHelper(
-                itemDragListener,
-                itemSwipeListener,
-                stateChangeListener,
-                itemLayoutPositionListener,
-                recyclerView)
+            itemDragListener,
+            itemSwipeListener,
+            stateChangeListener,
+            itemLayoutPositionListener,
+            recyclerView
+        )
         itemTouchHelper = ItemTouchHelper(swipeAndDragHelper)
     }
 
@@ -368,10 +408,12 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         val itemLayoutId = recyclerView?.itemLayoutId ?: 0
         if (itemLayoutId != 0) {
             val itemLayout = LayoutInflater.from(parent.context)
-                    .inflate(itemLayoutId, parent, false) as View
+                .inflate(itemLayoutId, parent, false) as View
             return getViewHolder(itemLayout)
-        } else throw NoSuchFieldException("Unless your adapter implements onCreateViewHolder(), " +
-                "the attribute item_layout must be provided for the DragDropSwipeRecyclerView.")
+        } else throw NoSuchFieldException(
+            "Unless your adapter implements onCreateViewHolder(), " +
+                    "the attribute item_layout must be provided for the DragDropSwipeRecyclerView."
+        )
     }
 
     override fun onBindViewHolder(holder: U, position: Int) {
@@ -385,28 +427,26 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
                 if (viewHolderPosition != NO_POSITION) {
                     val viewHolderItem = mutableDataSet[viewHolderPosition]
                     canBeDragged(viewHolderItem, holder, viewHolderPosition)
-                }
-                else false
+                } else false
             }
             canBeDroppedOver = holder.canBeDroppedOver ?: {
                 val viewHolderPosition = holder.bindingAdapterPosition
                 if (viewHolderPosition != NO_POSITION) {
                     val viewHolderItem = mutableDataSet[viewHolderPosition]
                     canBeDroppedOver(viewHolderItem, holder, viewHolderPosition)
-                }
-                else false
+                } else false
             }
             canBeSwiped = holder.canBeSwiped ?: {
                 val viewHolderPosition = holder.bindingAdapterPosition
                 if (viewHolderPosition != NO_POSITION) {
                     val viewHolderItem = mutableDataSet[viewHolderPosition]
                     canBeSwiped(viewHolderItem, holder, viewHolderPosition)
-                }
-                else false
+                } else false
             }
             itemView.alpha = 1f
             behindSwipedItemLayout = getBehindSwipedItemLayout(item, holder, position)
-            behindSwipedItemSecondaryLayout = getBehindSwipedItemSecondaryLayout(item, holder, position)
+            behindSwipedItemSecondaryLayout =
+                getBehindSwipedItemSecondaryLayout(item, holder, position)
         }
 
         setViewForDragging(item, holder, position)
@@ -516,14 +556,18 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     }
 
     private fun getBehindSwipedItemLayout(item: T, viewHolder: U, position: Int): View? {
-        return getBehindSwipedItemLayoutId(item, viewHolder, position)?.let { behindSwipedItemLayoutId ->
+        return getBehindSwipedItemLayoutId(
+            item,
+            viewHolder,
+            position
+        )?.let { behindSwipedItemLayoutId ->
             if (viewHolder.behindSwipedItemLayout?.id != behindSwipedItemLayoutId) {
                 // The behind-swiped-items layout was never inflated before or the
                 // layout ID has changed, so we inflate it
                 return recyclerView?.context?.let { context ->
-                     LayoutInflater
-                            .from(context)
-                            .inflate(behindSwipedItemLayoutId, null, false)
+                    LayoutInflater
+                        .from(context)
+                        .inflate(behindSwipedItemLayoutId, null, false)
                 }
             }
 
@@ -533,14 +577,18 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     }
 
     private fun getBehindSwipedItemSecondaryLayout(item: T, viewHolder: U, position: Int): View? {
-        return getBehindSwipedItemSecondaryLayoutId(item, viewHolder, position)?.let { behindSwipedItemSecondaryLayoutId ->
+        return getBehindSwipedItemSecondaryLayoutId(
+            item,
+            viewHolder,
+            position
+        )?.let { behindSwipedItemSecondaryLayoutId ->
             if (viewHolder.behindSwipedItemSecondaryLayout?.id != behindSwipedItemSecondaryLayoutId) {
                 // The secondary behind-swiped-items layout was never inflated before
                 // or the ID has changed, so we inflate it
                 return recyclerView?.context?.let { context ->
                     LayoutInflater
-                            .from(context)
-                            .inflate(behindSwipedItemSecondaryLayoutId, null, false)
+                        .from(context)
+                        .inflate(behindSwipedItemSecondaryLayoutId, null, false)
                 }
             }
 
@@ -550,68 +598,83 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     }
 
     private fun onIsSwipingImpl(
-            viewHolder: U,
-            offsetX: Int,
-            offsetY: Int,
-            canvasUnder: Canvas?,
-            canvasOver: Canvas?,
-            isUserControlled: Boolean) {
+        viewHolder: U,
+        offsetX: Int,
+        offsetY: Int,
+        canvasUnder: Canvas?,
+        canvasOver: Canvas?,
+        isUserControlled: Boolean
+    ) {
 
         val currentAdapterPosition = viewHolder.bindingAdapterPosition
-        val item = if (currentAdapterPosition != NO_POSITION) dataSet[currentAdapterPosition] else null
+        val item =
+            if (currentAdapterPosition != NO_POSITION) dataSet[currentAdapterPosition] else null
 
         drawOnSwiping(offsetX, offsetY, viewHolder, canvasUnder, canvasOver)
         onIsSwiping(item, viewHolder, offsetX, offsetY, canvasUnder, canvasOver, isUserControlled)
     }
 
     private fun onIsDraggingImpl(
-            viewHolder: U,
-            offsetX: Int,
-            offsetY: Int,
-            canvasUnder: Canvas?,
-            canvasOver: Canvas?,
-            isUserControlled: Boolean) {
+        viewHolder: U,
+        offsetX: Int,
+        offsetY: Int,
+        canvasUnder: Canvas?,
+        canvasOver: Canvas?,
+        isUserControlled: Boolean
+    ) {
 
         val currentAdapterPosition = viewHolder.bindingAdapterPosition
-        val item = if (currentAdapterPosition != NO_POSITION) dataSet[currentAdapterPosition] else null
+        val item =
+            if (currentAdapterPosition != NO_POSITION) dataSet[currentAdapterPosition] else null
 
         drawOnDragging(canvasOver, viewHolder)
         onIsDragging(item, viewHolder, offsetX, offsetY, canvasUnder, canvasOver, isUserControlled)
     }
 
     private fun drawOnSwiping(
-            offsetX: Int,
-            offsetY: Int,
-            viewHolder: U,
-            canvasUnder: Canvas?,
-            canvasOver: Canvas?) {
+        offsetX: Int,
+        offsetY: Int,
+        viewHolder: U,
+        canvasUnder: Canvas?,
+        canvasOver: Canvas?
+    ) {
 
         recyclerView?.let { list ->
 
-            val isSwipingHorizontally = (orientation.swipeFlagsValue and DirectionFlag.RIGHT.value == DirectionFlag.RIGHT.value)
-                    || (orientation.swipeFlagsValue and DirectionFlag.LEFT.value == DirectionFlag.LEFT.value)
-            val isSecondaryDirection = (isSwipingHorizontally && offsetX > 0) || (!isSwipingHorizontally && offsetY < 0)
+            val isSwipingHorizontally =
+                (orientation.swipeFlagsValue and DirectionFlag.RIGHT.value == DirectionFlag.RIGHT.value)
+                        || (orientation.swipeFlagsValue and DirectionFlag.LEFT.value == DirectionFlag.LEFT.value)
+            val isSecondaryDirection =
+                (isSwipingHorizontally && offsetX > 0) || (!isSwipingHorizontally && offsetY < 0)
 
             // The current "coordinates" of the layout with the swipe translation applied to it
-            val currentLayoutAreaLeft = viewHolder.itemView.left + viewHolder.itemView.translationX.toInt()
-            val currentLayoutAreaTop = viewHolder.itemView.top + viewHolder.itemView.translationY.toInt()
-            val currentLayoutAreaRight = viewHolder.itemView.right + viewHolder.itemView.translationX.toInt()
-            val currentLayoutAreaBottom = viewHolder.itemView.bottom + viewHolder.itemView.translationY.toInt()
+            val currentLayoutAreaLeft =
+                viewHolder.itemView.left + viewHolder.itemView.translationX.toInt()
+            val currentLayoutAreaTop =
+                viewHolder.itemView.top + viewHolder.itemView.translationY.toInt()
+            val currentLayoutAreaRight =
+                viewHolder.itemView.right + viewHolder.itemView.translationX.toInt()
+            val currentLayoutAreaBottom =
+                viewHolder.itemView.bottom + viewHolder.itemView.translationY.toInt()
 
             // The original "coordinates" of the layout from which it is being moved away
-            val originalLayoutAreaLeft = if (isSwipingHorizontally) viewHolder.itemView.left else currentLayoutAreaLeft
-            val originalLayoutAreaTop = if (!isSwipingHorizontally) viewHolder.itemView.top else currentLayoutAreaTop
-            val originalLayoutAreaRight = if (isSwipingHorizontally) viewHolder.itemView.right else currentLayoutAreaRight
-            val originalLayoutAreaBottom = if (!isSwipingHorizontally) viewHolder.itemView.bottom else currentLayoutAreaBottom
+            val originalLayoutAreaLeft =
+                if (isSwipingHorizontally) viewHolder.itemView.left else currentLayoutAreaLeft
+            val originalLayoutAreaTop =
+                if (!isSwipingHorizontally) viewHolder.itemView.top else currentLayoutAreaTop
+            val originalLayoutAreaRight =
+                if (isSwipingHorizontally) viewHolder.itemView.right else currentLayoutAreaRight
+            val originalLayoutAreaBottom =
+                if (!isSwipingHorizontally) viewHolder.itemView.bottom else currentLayoutAreaBottom
 
             // If requested, make the item less opaque as it moves away from it original position
             var newItemAlpha = 1f
             if (list.reduceItemAlphaOnSwiping) {
                 val offsetToItemSizeRatio =
-                        if (isSwipingHorizontally)
-                            abs(offsetX).toFloat() / (originalLayoutAreaRight - originalLayoutAreaLeft).toFloat()
-                        else
-                            abs(offsetY).toFloat() / (originalLayoutAreaBottom - originalLayoutAreaTop).toFloat()
+                    if (isSwipingHorizontally)
+                        abs(offsetX).toFloat() / (originalLayoutAreaRight - originalLayoutAreaLeft).toFloat()
+                    else
+                        abs(offsetY).toFloat() / (originalLayoutAreaBottom - originalLayoutAreaTop).toFloat()
                 newItemAlpha = 1.1f - offsetToItemSizeRatio
                 newItemAlpha = if (newItemAlpha < 0.1f) 0.1f else newItemAlpha
                 newItemAlpha = if (newItemAlpha > 1f) 1f else newItemAlpha
@@ -620,48 +683,51 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
 
             if (canvasUnder != null)
                 drawLayoutBehindOnSwiping(
-                        list,
-                        canvasUnder,
-                        viewHolder,
-                        originalLayoutAreaLeft,
-                        originalLayoutAreaTop,
-                        originalLayoutAreaRight,
-                        originalLayoutAreaBottom,
-                        isSwipingHorizontally,
-                        isSecondaryDirection)
+                    list,
+                    canvasUnder,
+                    viewHolder,
+                    originalLayoutAreaLeft,
+                    originalLayoutAreaTop,
+                    originalLayoutAreaRight,
+                    originalLayoutAreaBottom,
+                    isSwipingHorizontally,
+                    isSecondaryDirection
+                )
             else if (canvasOver != null) {
                 drawDividersOnSwiping(
-                        list,
-                        canvasOver,
-                        viewHolder,
-                        currentLayoutAreaLeft,
-                        currentLayoutAreaTop,
-                        currentLayoutAreaRight,
-                        currentLayoutAreaBottom,
-                        newItemAlpha,
-                        originalLayoutAreaLeft,
-                        originalLayoutAreaTop,
-                        originalLayoutAreaRight,
-                        originalLayoutAreaBottom)
+                    list,
+                    canvasOver,
+                    viewHolder,
+                    currentLayoutAreaLeft,
+                    currentLayoutAreaTop,
+                    currentLayoutAreaRight,
+                    currentLayoutAreaBottom,
+                    newItemAlpha,
+                    originalLayoutAreaLeft,
+                    originalLayoutAreaTop,
+                    originalLayoutAreaRight,
+                    originalLayoutAreaBottom
+                )
             }
         }
     }
 
     private fun drawOnDragging(canvasOver: Canvas?, viewHolder: U) =
-            recyclerView?.let { list ->
-                if (canvasOver != null) drawDividers(list, canvasOver, viewHolder)
-            }
+        recyclerView?.let { list ->
+            if (canvasOver != null) drawDividers(list, canvasOver, viewHolder)
+        }
 
     private fun drawLayoutBehindOnSwiping(
-            list: DragDropSwipeRecyclerView,
-            canvasUnder: Canvas,
-            viewHolder: U,
-            left: Int,
-            top: Int,
-            right: Int,
-            bottom: Int,
-            isSwipingHorizontally: Boolean,
-            isSecondarySwipeDirection: Boolean) {
+        list: DragDropSwipeRecyclerView,
+        canvasUnder: Canvas,
+        viewHolder: U,
+        left: Int,
+        top: Int,
+        right: Int,
+        bottom: Int,
+        isSwipingHorizontally: Boolean,
+        isSecondarySwipeDirection: Boolean
+    ) {
 
         canvasUnder.save()
 
@@ -670,14 +736,14 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
 
         // Get the custom layout to draw behind the swiped item, if any
         val behindLayoutMain = viewHolder.behindSwipedItemLayout
-                ?: list.behindSwipedItemLayout
+            ?: list.behindSwipedItemLayout
         val behindLayoutSecondary = viewHolder.behindSwipedItemSecondaryLayout
-                ?: list.behindSwipedItemSecondaryLayout
+            ?: list.behindSwipedItemSecondaryLayout
         val behindLayout =
-                if (isSecondarySwipeDirection && behindLayoutSecondary != null)
-                    behindLayoutSecondary
-                else
-                    behindLayoutMain
+            if (isSecondarySwipeDirection && behindLayoutSecondary != null)
+                behindLayoutSecondary
+            else
+                behindLayoutMain
         if (behindLayout != null) {
 
             val behindLayoutWidth = right - left
@@ -686,8 +752,9 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
             // Draw the custom layout behind the item
             if (behindLayout.measuredWidth != behindLayoutWidth || behindLayout.measuredHeight != behindLayoutHeight)
                 behindLayout.measure(
-                        View.MeasureSpec.makeMeasureSpec(behindLayoutWidth, View.MeasureSpec.EXACTLY),
-                        View.MeasureSpec.makeMeasureSpec(behindLayoutHeight, View.MeasureSpec.EXACTLY))
+                    View.MeasureSpec.makeMeasureSpec(behindLayoutWidth, View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.makeMeasureSpec(behindLayoutHeight, View.MeasureSpec.EXACTLY)
+                )
             behindLayout.layout(left, top, right, bottom)
             canvasUnder.save()
             canvasUnder.translate(left.toFloat(), top.toFloat())
@@ -697,21 +764,22 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
 
             // Since there was no custom layout, look for the background color and draw it if necessary
             val backgroundColor =
-                    if (isSecondarySwipeDirection
-                            && list.behindSwipedItemBackgroundSecondaryColor != null
-                            && list.behindSwipedItemBackgroundSecondaryColor != Color.TRANSPARENT)
-                        list.behindSwipedItemBackgroundSecondaryColor
-                    else
-                        list.behindSwipedItemBackgroundColor
+                if (isSecondarySwipeDirection
+                    && list.behindSwipedItemBackgroundSecondaryColor != null
+                    && list.behindSwipedItemBackgroundSecondaryColor != Color.TRANSPARENT
+                )
+                    list.behindSwipedItemBackgroundSecondaryColor
+                else
+                    list.behindSwipedItemBackgroundColor
             if (backgroundColor != null && backgroundColor != Color.TRANSPARENT)
                 canvasUnder.drawColor(backgroundColor)
 
             // Draw icon if necessary
             val iconBehindSwipedItem =
-                    if (isSecondarySwipeDirection && list.behindSwipedItemIconSecondaryDrawable != null)
-                        list.behindSwipedItemIconSecondaryDrawable
-                    else
-                        list.behindSwipedItemIconDrawable
+                if (isSecondarySwipeDirection && list.behindSwipedItemIconSecondaryDrawable != null)
+                    list.behindSwipedItemIconSecondaryDrawable
+                else
+                    list.behindSwipedItemIconDrawable
             if (iconBehindSwipedItem != null) {
 
                 // Calculate the icon position to be centered
@@ -750,74 +818,108 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     }
 
     private fun drawDividersOnSwiping(
-            list: DragDropSwipeRecyclerView,
-            canvasOver: Canvas,
-            viewHolder: U,
-            currentLayoutAreaLeft: Int,
-            currentLayoutAreaTop: Int,
-            currentLayoutAreaRight: Int,
-            currentLayoutAreaBottom: Int,
-            newItemAlpha: Float,
-            originalLayoutAreaLeft: Int,
-            originalLayoutAreaTop: Int,
-            originalLayoutAreaRight: Int,
-            originalLayoutAreaBottom: Int) {
+        list: DragDropSwipeRecyclerView,
+        canvasOver: Canvas,
+        viewHolder: U,
+        currentLayoutAreaLeft: Int,
+        currentLayoutAreaTop: Int,
+        currentLayoutAreaRight: Int,
+        currentLayoutAreaBottom: Int,
+        newItemAlpha: Float,
+        originalLayoutAreaLeft: Int,
+        originalLayoutAreaTop: Int,
+        originalLayoutAreaRight: Int,
+        originalLayoutAreaBottom: Int
+    ) {
 
         // Draw dividers around the swiped item layout
         drawDividers(
-                list,
-                canvasOver,
-                viewHolder,
-                currentLayoutAreaLeft,
-                currentLayoutAreaTop,
-                currentLayoutAreaRight,
-                currentLayoutAreaBottom,
-                newItemAlpha)
+            list,
+            canvasOver,
+            viewHolder,
+            currentLayoutAreaLeft,
+            currentLayoutAreaTop,
+            currentLayoutAreaRight,
+            currentLayoutAreaBottom,
+            newItemAlpha
+        )
 
         // Draw dividers around the area behind - except with grids (it looks odd with grids)
         if (orientation != DragDropSwipeRecyclerView.ListOrientation.GRID_LIST_WITH_HORIZONTAL_SWIPING
-                && orientation != DragDropSwipeRecyclerView.ListOrientation.GRID_LIST_WITH_VERTICAL_SWIPING)
+            && orientation != DragDropSwipeRecyclerView.ListOrientation.GRID_LIST_WITH_VERTICAL_SWIPING
+        )
             drawDividers(
-                    list,
-                    canvasOver,
-                    viewHolder,
-                    originalLayoutAreaLeft,
-                    originalLayoutAreaTop,
-                    originalLayoutAreaRight,
-                    originalLayoutAreaBottom)
+                list,
+                canvasOver,
+                viewHolder,
+                originalLayoutAreaLeft,
+                originalLayoutAreaTop,
+                originalLayoutAreaRight,
+                originalLayoutAreaBottom
+            )
     }
 
     private fun drawDividers(
-            list: DragDropSwipeRecyclerView,
-            canvasOver: Canvas,
-            viewHolder: U,
-            left: Int? = null,
-            top: Int? = null,
-            right: Int? = null,
-            bottom: Int? = null,
-            alpha: Float? = null) {
+        list: DragDropSwipeRecyclerView,
+        canvasOver: Canvas,
+        viewHolder: U,
+        left: Int? = null,
+        top: Int? = null,
+        right: Int? = null,
+        bottom: Int? = null,
+        alpha: Float? = null
+    ) {
 
         list.dividerDrawable?.let { dividerDrawable ->
             when (orientation) {
                 DragDropSwipeRecyclerView.ListOrientation.VERTICAL_LIST_WITH_VERTICAL_DRAGGING,
                 DragDropSwipeRecyclerView.ListOrientation.VERTICAL_LIST_WITH_UNCONSTRAINED_DRAGGING ->
-                    drawHorizontalDividers(viewHolder.itemView, canvasOver, dividerDrawable, left, right, alpha = alpha)
+                    drawHorizontalDividers(
+                        viewHolder.itemView,
+                        canvasOver,
+                        dividerDrawable,
+                        left,
+                        right,
+                        alpha = alpha
+                    )
 
                 DragDropSwipeRecyclerView.ListOrientation.HORIZONTAL_LIST_WITH_UNCONSTRAINED_DRAGGING,
                 DragDropSwipeRecyclerView.ListOrientation.HORIZONTAL_LIST_WITH_HORIZONTAL_DRAGGING ->
-                    drawVerticalDividers(viewHolder.itemView, canvasOver, dividerDrawable, top, bottom, alpha = alpha)
+                    drawVerticalDividers(
+                        viewHolder.itemView,
+                        canvasOver,
+                        dividerDrawable,
+                        top,
+                        bottom,
+                        alpha = alpha
+                    )
 
                 DragDropSwipeRecyclerView.ListOrientation.GRID_LIST_WITH_HORIZONTAL_SWIPING,
                 DragDropSwipeRecyclerView.ListOrientation.GRID_LIST_WITH_VERTICAL_SWIPING -> {
-                    drawHorizontalDividers(viewHolder.itemView, canvasOver, dividerDrawable, left, right, alpha = alpha)
-                    drawVerticalDividers(viewHolder.itemView, canvasOver, dividerDrawable, top, bottom, alpha = alpha)
+                    drawHorizontalDividers(
+                        viewHolder.itemView,
+                        canvasOver,
+                        dividerDrawable,
+                        left,
+                        right,
+                        alpha = alpha
+                    )
+                    drawVerticalDividers(
+                        viewHolder.itemView,
+                        canvasOver,
+                        dividerDrawable,
+                        top,
+                        bottom,
+                        alpha = alpha
+                    )
                 }
             }
         }
     }
 
     private fun setViewForDragging(item: T, holder: U, position: Int) {
-        val viewToDrag = getViewToTouchToStartDraggingItem(item, holder, position) ?: holder.itemView
+        val viewToDrag =
+            getViewToTouchToStartDraggingItem(item, holder, position) ?: holder.itemView
         if (recyclerView?.longPressToStartDragging != true)
             setItemDragAndDrop(viewToDrag, holder)
         else
@@ -826,19 +928,21 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setItemDragAndDrop(viewToDrag: View, holder: U) =
-            viewToDrag.setOnTouchListener { _, event ->
-                if (holder.canBeDragged?.invoke() == true && event?.actionMasked == MotionEvent.ACTION_DOWN) {
-                    itemTouchHelper.startDrag(holder)
-                    return@setOnTouchListener true
-                }
-                false
+        viewToDrag.setOnTouchListener { _, event ->
+            if (holder.canBeDragged?.invoke() == true && event?.actionMasked == MotionEvent.ACTION_DOWN) {
+                itemTouchHelper.startDrag(holder)
+                return@setOnTouchListener true
             }
+            false
+        }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setItemDragAndDropWithLongPress(viewToDrag: View, holder: U) {
         val context = holder.itemView.context
         val longPressGestureListener = object : GestureDetector.SimpleOnGestureListener() {
-            override fun onDown(event: MotionEvent) = !holder.isBeingSwiped && !holder.isBeingDragged
+            override fun onDown(event: MotionEvent) =
+                !holder.isBeingSwiped && !holder.isBeingDragged
+
             override fun onLongPress(e: MotionEvent) = itemTouchHelper.startDrag(holder)
         }
         val longPressGestureDetector = GestureDetector(context, longPressGestureListener)

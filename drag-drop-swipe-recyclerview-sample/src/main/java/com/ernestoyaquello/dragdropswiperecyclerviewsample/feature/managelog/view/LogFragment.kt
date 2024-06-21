@@ -1,10 +1,12 @@
 package com.ernestoyaquello.dragdropswiperecyclerviewsample.feature.managelog.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.R
 import com.ernestoyaquello.dragdropswiperecyclerviewsample.util.Logger
 
@@ -29,9 +31,10 @@ class LogFragment : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         val rootView = inflater.inflate(R.layout.fragment_log, container, false)
         messagesViewContainerContainer = rootView.findViewById(R.id.messages_container_container)

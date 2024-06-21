@@ -5,76 +5,83 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Build.VERSION.SDK_INT
+import android.os.Bundle
 import android.os.Parcelable
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ItemTouchHelper
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemDragListener
 import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemSwipeListener
 import com.ernestoyaquello.dragdropswiperecyclerview.util.DragDropSwipeItemDecoration
-import android.os.Bundle
 
 /**
  * Extension of RecyclerView that detects swipe, drag & drop and scrolling.
  */
 open class DragDropSwipeRecyclerView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : ScrollAwareRecyclerView(context, attrs, defStyleAttr) {
 
     /**
      * Indicates the orientation of a recycler view of type DragDropSwipeRecyclerView.
      */
     enum class ListOrientation(
-            internal var dragFlagsValue: Int,
-            internal var swipeFlagsValue: Int) {
+        internal var dragFlagsValue: Int,
+        internal var swipeFlagsValue: Int
+    ) {
 
         /**
          * The list will be scrolled vertically and its items will be dragged only vertically.
          */
         VERTICAL_LIST_WITH_VERTICAL_DRAGGING(
-                DirectionFlag.UP.value or DirectionFlag.DOWN.value,
-                DirectionFlag.LEFT.value or DirectionFlag.RIGHT.value),
+            DirectionFlag.UP.value or DirectionFlag.DOWN.value,
+            DirectionFlag.LEFT.value or DirectionFlag.RIGHT.value
+        ),
 
         /**
          * The list will be scrolled vertically and its items will be dragged in any direction.
          */
         VERTICAL_LIST_WITH_UNCONSTRAINED_DRAGGING(
-                DirectionFlag.LEFT.value or DirectionFlag.RIGHT.value or DirectionFlag.UP.value or DirectionFlag.DOWN.value,
-                DirectionFlag.LEFT.value or DirectionFlag.RIGHT.value),
+            DirectionFlag.LEFT.value or DirectionFlag.RIGHT.value or DirectionFlag.UP.value or DirectionFlag.DOWN.value,
+            DirectionFlag.LEFT.value or DirectionFlag.RIGHT.value
+        ),
 
         /**
          * The list will be scrolled horizontally and its items will be dragged only horizontally.
          */
         HORIZONTAL_LIST_WITH_HORIZONTAL_DRAGGING(
-                DirectionFlag.LEFT.value or DirectionFlag.RIGHT.value,
-                DirectionFlag.UP.value or DirectionFlag.DOWN.value),
+            DirectionFlag.LEFT.value or DirectionFlag.RIGHT.value,
+            DirectionFlag.UP.value or DirectionFlag.DOWN.value
+        ),
 
         /**
          * The list will be scrolled horizontally and its items will be dragged in any direction.
          */
         HORIZONTAL_LIST_WITH_UNCONSTRAINED_DRAGGING(
-                DirectionFlag.LEFT.value or DirectionFlag.RIGHT.value or DirectionFlag.UP.value or DirectionFlag.DOWN.value,
-                DirectionFlag.UP.value or DirectionFlag.DOWN.value),
+            DirectionFlag.LEFT.value or DirectionFlag.RIGHT.value or DirectionFlag.UP.value or DirectionFlag.DOWN.value,
+            DirectionFlag.UP.value or DirectionFlag.DOWN.value
+        ),
 
         /**
          * The list will be arranged as a grid and its items will be swiped only horizontally.
          */
         GRID_LIST_WITH_HORIZONTAL_SWIPING(
-                DirectionFlag.LEFT.value or DirectionFlag.RIGHT.value or DirectionFlag.UP.value or DirectionFlag.DOWN.value,
-                DirectionFlag.LEFT.value or DirectionFlag.RIGHT.value),
+            DirectionFlag.LEFT.value or DirectionFlag.RIGHT.value or DirectionFlag.UP.value or DirectionFlag.DOWN.value,
+            DirectionFlag.LEFT.value or DirectionFlag.RIGHT.value
+        ),
 
         /**
          * The list will be arranged as a grid and its items will be swiped only vertically.
          */
         GRID_LIST_WITH_VERTICAL_SWIPING(
-                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT or ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-                ItemTouchHelper.UP or ItemTouchHelper.DOWN);
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT or ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN
+        );
 
         /**
          * Direction flags for the drag action. Determines in which direction the user gestures
@@ -207,7 +214,8 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
         get() {
             val behindSwipedItemSecondaryViewId = behindSwipedItemSecondaryLayoutId
             if (field == null && behindSwipedItemSecondaryViewId != null && behindSwipedItemSecondaryViewId != 0)
-                field = LayoutInflater.from(context).inflate(behindSwipedItemSecondaryViewId, null, false)
+                field = LayoutInflater.from(context)
+                    .inflate(behindSwipedItemSecondaryViewId, null, false)
             else if (behindSwipedItemSecondaryViewId == null || behindSwipedItemSecondaryViewId == 0)
                 field = null
 
@@ -292,7 +300,8 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
                 field = value
 
                 if (value != null && value != 0) {
-                    val behindSwipedSecondaryItemIcon = AppCompatResources.getDrawable(context, value)
+                    val behindSwipedSecondaryItemIcon =
+                        AppCompatResources.getDrawable(context, value)
                     if (behindSwipedSecondaryItemIcon != null)
                         behindSwipedItemIconSecondaryDrawable = behindSwipedSecondaryItemIcon
                 } else behindSwipedItemIconSecondaryDrawable = null
@@ -358,7 +367,8 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
                 field = value
 
                 if (value != null && value != 0) {
-                    val behindSwipedItemView = LayoutInflater.from(context).inflate(value, null, false)
+                    val behindSwipedItemView =
+                        LayoutInflater.from(context).inflate(value, null, false)
                     if (behindSwipedItemView != null)
                         behindSwipedItemLayout = behindSwipedItemView
                 } else behindSwipedItemLayout = null
@@ -379,7 +389,8 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
                 field = value
 
                 if (value != null && value != 0) {
-                    val behindSwipedItemSecondaryView = LayoutInflater.from(context).inflate(value, null, false)
+                    val behindSwipedItemSecondaryView =
+                        LayoutInflater.from(context).inflate(value, null, false)
                     if (behindSwipedItemSecondaryView != null)
                         behindSwipedItemSecondaryLayout = behindSwipedItemSecondaryView
                 } else behindSwipedItemSecondaryLayout = null
@@ -449,7 +460,7 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
      *
      * @throws IllegalArgumentException If the adapter to set is null.
      */
-    var adapter: DragDropSwipeAdapter<*,*>? = null
+    var adapter: DragDropSwipeAdapter<*, *>? = null
         set(value) {
             if (value != null) {
                 if (value != field) {
@@ -522,24 +533,57 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
     init {
         if (attrs != null) {
             val vars = context.theme.obtainStyledAttributes(
-                    attrs,
-                    R.styleable.DragDropSwipeRecyclerView,
-                    defStyleAttr,
-                    0)
+                attrs,
+                R.styleable.DragDropSwipeRecyclerView,
+                defStyleAttr,
+                0
+            )
 
             try {
-                itemLayoutId = vars.getResourceId(R.styleable.DragDropSwipeRecyclerView_item_layout, 0)
-                dividerDrawableId = vars.getResourceId(R.styleable.DragDropSwipeRecyclerView_divider, 0)
-                behindSwipedItemIconDrawableId = vars.getResourceId(R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_icon, 0)
-                behindSwipedItemIconSecondaryDrawableId = vars.getResourceId(R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_icon_secondary, 0)
-                behindSwipedItemIconMargin = vars.getDimension(R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_icon_margin, 0f)
-                behindSwipedItemCenterIcon = vars.getBoolean(R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_icon_centered, false)
-                behindSwipedItemBackgroundColor = vars.getColor(R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_bg_color, Color.TRANSPARENT)
-                behindSwipedItemBackgroundSecondaryColor = vars.getColor(R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_bg_color_secondary, Color.TRANSPARENT)
-                behindSwipedItemLayoutId = vars.getResourceId(R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_custom_layout, 0)
-                behindSwipedItemSecondaryLayoutId = vars.getResourceId(R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_custom_layout_secondary, 0)
-                reduceItemAlphaOnSwiping = vars.getBoolean(R.styleable.DragDropSwipeRecyclerView_swiped_item_opacity_fades_on_swiping, false)
-                longPressToStartDragging = vars.getBoolean(R.styleable.DragDropSwipeRecyclerView_long_press_to_start_dragging, false)
+                itemLayoutId =
+                    vars.getResourceId(R.styleable.DragDropSwipeRecyclerView_item_layout, 0)
+                dividerDrawableId =
+                    vars.getResourceId(R.styleable.DragDropSwipeRecyclerView_divider, 0)
+                behindSwipedItemIconDrawableId = vars.getResourceId(
+                    R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_icon,
+                    0
+                )
+                behindSwipedItemIconSecondaryDrawableId = vars.getResourceId(
+                    R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_icon_secondary,
+                    0
+                )
+                behindSwipedItemIconMargin = vars.getDimension(
+                    R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_icon_margin,
+                    0f
+                )
+                behindSwipedItemCenterIcon = vars.getBoolean(
+                    R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_icon_centered,
+                    false
+                )
+                behindSwipedItemBackgroundColor = vars.getColor(
+                    R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_bg_color,
+                    Color.TRANSPARENT
+                )
+                behindSwipedItemBackgroundSecondaryColor = vars.getColor(
+                    R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_bg_color_secondary,
+                    Color.TRANSPARENT
+                )
+                behindSwipedItemLayoutId = vars.getResourceId(
+                    R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_custom_layout,
+                    0
+                )
+                behindSwipedItemSecondaryLayoutId = vars.getResourceId(
+                    R.styleable.DragDropSwipeRecyclerView_behind_swiped_item_custom_layout_secondary,
+                    0
+                )
+                reduceItemAlphaOnSwiping = vars.getBoolean(
+                    R.styleable.DragDropSwipeRecyclerView_swiped_item_opacity_fades_on_swiping,
+                    false
+                )
+                longPressToStartDragging = vars.getBoolean(
+                    R.styleable.DragDropSwipeRecyclerView_long_press_to_start_dragging,
+                    false
+                )
             } finally {
                 vars.recycle()
             }
@@ -554,8 +598,9 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
      */
     override fun setAdapter(adapter: Adapter<*>?) {
         when (adapter) {
-            !is DragDropSwipeAdapter<*,*>? ->
+            !is DragDropSwipeAdapter<*, *>? ->
                 throw TypeCastException("The adapter must be an extension of DragDropSwipeAdapter.")
+
             else -> this.adapter = adapter
         }
     }
@@ -573,18 +618,18 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
             when (layoutManager) {
 
                 is LinearLayoutManager -> orientation =
-                        when (layoutManager.orientation) {
-                            VERTICAL -> ListOrientation.VERTICAL_LIST_WITH_VERTICAL_DRAGGING
-                            HORIZONTAL -> ListOrientation.HORIZONTAL_LIST_WITH_UNCONSTRAINED_DRAGGING
-                            else -> orientation
-                }
+                    when (layoutManager.orientation) {
+                        VERTICAL -> ListOrientation.VERTICAL_LIST_WITH_VERTICAL_DRAGGING
+                        HORIZONTAL -> ListOrientation.HORIZONTAL_LIST_WITH_UNCONSTRAINED_DRAGGING
+                        else -> orientation
+                    }
 
                 is GridLayoutManager -> orientation =
-                        when (layoutManager.orientation) {
-                            VERTICAL -> ListOrientation.GRID_LIST_WITH_HORIZONTAL_SWIPING
-                            HORIZONTAL -> ListOrientation.GRID_LIST_WITH_VERTICAL_SWIPING
-                            else -> orientation
-                }
+                    when (layoutManager.orientation) {
+                        VERTICAL -> ListOrientation.GRID_LIST_WITH_HORIZONTAL_SWIPING
+                        HORIZONTAL -> ListOrientation.GRID_LIST_WITH_VERTICAL_SWIPING
+                        else -> orientation
+                    }
             }
         }
     }
@@ -624,7 +669,8 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
         val flagValue = dragDirectionToAllow.value
         if (orientation?.dragDirectionFlags?.any { it.value and flagValue == flagValue } == true) {
             val newValue = disabledDragFlagsValue xor flagValue
-            disabledDragFlagsValue = if (newValue < disabledDragFlagsValue) newValue else disabledDragFlagsValue
+            disabledDragFlagsValue =
+                if (newValue < disabledDragFlagsValue) newValue else disabledDragFlagsValue
         }
     }
 
@@ -639,7 +685,8 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
         val flagValue = swipeDirectionToAllow.value
         if (orientation?.swipeDirectionFlags?.any { it.value and flagValue == flagValue } == true) {
             val newValue = disabledSwipeFlagsValue xor flagValue
-            disabledSwipeFlagsValue = if (newValue < disabledSwipeFlagsValue) newValue else disabledSwipeFlagsValue
+            disabledSwipeFlagsValue =
+                if (newValue < disabledSwipeFlagsValue) newValue else disabledSwipeFlagsValue
         }
     }
 
@@ -652,14 +699,29 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
             bundle.putParcelable(SUPER_STATE_KEY, superState)
             bundle.putInt(ITEM_LAYOUT_ID_KEY, itemLayoutId)
             bundle.putInt(DIVIDER_DRAWABLE_ID_KEY, dividerDrawableId ?: 0)
-            bundle.putInt(BEHIND_SWIPED_ITEM_ICON_DRAWABLE_ID_KEY, behindSwipedItemIconDrawableId ?: 0)
-            bundle.putInt(BEHIND_SWIPED_ITEM_ICON_SECONDARY_DRAWABLE_ID_KEY, behindSwipedItemIconSecondaryDrawableId ?: 0)
+            bundle.putInt(
+                BEHIND_SWIPED_ITEM_ICON_DRAWABLE_ID_KEY,
+                behindSwipedItemIconDrawableId ?: 0
+            )
+            bundle.putInt(
+                BEHIND_SWIPED_ITEM_ICON_SECONDARY_DRAWABLE_ID_KEY,
+                behindSwipedItemIconSecondaryDrawableId ?: 0
+            )
             bundle.putFloat(BEHIND_SWIPED_ITEM_ICON_MARGIN_KEY, behindSwipedItemIconMargin)
             bundle.putBoolean(BEHIND_SWIPED_ITEM_CENTER_ICON_KEY, behindSwipedItemCenterIcon)
-            bundle.putInt(BEHIND_SWIPED_ITEM_BACKGROUND_COLOR_KEY, behindSwipedItemBackgroundColor ?: Color.TRANSPARENT)
-            bundle.putInt(BEHIND_SWIPED_ITEM_BACKGROUND_SECONDARY_COLOR_KEY, behindSwipedItemBackgroundSecondaryColor ?: Color.TRANSPARENT)
+            bundle.putInt(
+                BEHIND_SWIPED_ITEM_BACKGROUND_COLOR_KEY,
+                behindSwipedItemBackgroundColor ?: Color.TRANSPARENT
+            )
+            bundle.putInt(
+                BEHIND_SWIPED_ITEM_BACKGROUND_SECONDARY_COLOR_KEY,
+                behindSwipedItemBackgroundSecondaryColor ?: Color.TRANSPARENT
+            )
             bundle.putInt(BEHIND_SWIPED_ITEM_LAYOUT_ID_KEY, behindSwipedItemLayoutId ?: 0)
-            bundle.putInt(BEHIND_SWIPED_ITEM_SECONDARY_LAYOUT_ID_KEY, behindSwipedItemSecondaryLayoutId ?: 0)
+            bundle.putInt(
+                BEHIND_SWIPED_ITEM_SECONDARY_LAYOUT_ID_KEY,
+                behindSwipedItemSecondaryLayoutId ?: 0
+            )
             bundle.putBoolean(REDUCE_ITEM_ALPHA_ON_SWIPING_KEY, reduceItemAlphaOnSwiping)
             bundle.putBoolean(LONG_PRESS_TO_START_DRAGGING_KEY, longPressToStartDragging)
             bundle.putInt(NUM_OF_COLUMNS_PER_ROW_IN_GRID_LIST_KEY, numOfColumnsPerRowInGridList)
@@ -679,19 +741,28 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
 
         if (isSaveEnabled && state is Bundle) {
             superState = when {
-                SDK_INT >= Build.VERSION_CODES.TIRAMISU -> state.getParcelable(SUPER_STATE_KEY, Parcelable::class.java)
+                SDK_INT >= Build.VERSION_CODES.TIRAMISU -> state.getParcelable(
+                    SUPER_STATE_KEY,
+                    Parcelable::class.java
+                )
+
                 else -> @Suppress("DEPRECATION") state.getParcelable(SUPER_STATE_KEY)
             }
             itemLayoutId = state.getInt(ITEM_LAYOUT_ID_KEY, 0)
             dividerDrawableId = state.getInt(DIVIDER_DRAWABLE_ID_KEY, 0)
-            behindSwipedItemIconDrawableId = state.getInt(BEHIND_SWIPED_ITEM_ICON_DRAWABLE_ID_KEY, 0)
-            behindSwipedItemIconSecondaryDrawableId = state.getInt(BEHIND_SWIPED_ITEM_ICON_SECONDARY_DRAWABLE_ID_KEY, 0)
+            behindSwipedItemIconDrawableId =
+                state.getInt(BEHIND_SWIPED_ITEM_ICON_DRAWABLE_ID_KEY, 0)
+            behindSwipedItemIconSecondaryDrawableId =
+                state.getInt(BEHIND_SWIPED_ITEM_ICON_SECONDARY_DRAWABLE_ID_KEY, 0)
             behindSwipedItemIconMargin = state.getFloat(BEHIND_SWIPED_ITEM_ICON_MARGIN_KEY, 0f)
             behindSwipedItemCenterIcon = state.getBoolean(BEHIND_SWIPED_ITEM_CENTER_ICON_KEY, false)
-            behindSwipedItemBackgroundColor = state.getInt(BEHIND_SWIPED_ITEM_BACKGROUND_COLOR_KEY, Color.TRANSPARENT)
-            behindSwipedItemBackgroundSecondaryColor = state.getInt(BEHIND_SWIPED_ITEM_BACKGROUND_SECONDARY_COLOR_KEY, Color.TRANSPARENT)
+            behindSwipedItemBackgroundColor =
+                state.getInt(BEHIND_SWIPED_ITEM_BACKGROUND_COLOR_KEY, Color.TRANSPARENT)
+            behindSwipedItemBackgroundSecondaryColor =
+                state.getInt(BEHIND_SWIPED_ITEM_BACKGROUND_SECONDARY_COLOR_KEY, Color.TRANSPARENT)
             behindSwipedItemLayoutId = state.getInt(BEHIND_SWIPED_ITEM_LAYOUT_ID_KEY, 0)
-            behindSwipedItemSecondaryLayoutId = state.getInt(BEHIND_SWIPED_ITEM_SECONDARY_LAYOUT_ID_KEY, 0)
+            behindSwipedItemSecondaryLayoutId =
+                state.getInt(BEHIND_SWIPED_ITEM_SECONDARY_LAYOUT_ID_KEY, 0)
             reduceItemAlphaOnSwiping = state.getBoolean(REDUCE_ITEM_ALPHA_ON_SWIPING_KEY, false)
             longPressToStartDragging = state.getBoolean(LONG_PRESS_TO_START_DRAGGING_KEY, false)
             numOfColumnsPerRowInGridList = state.getInt(NUM_OF_COLUMNS_PER_ROW_IN_GRID_LIST_KEY, 1)
@@ -711,13 +782,16 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
         const val ITEM_LAYOUT_ID_KEY = "item_layout_id"
         const val DIVIDER_DRAWABLE_ID_KEY = "divider_drawable_id"
         const val BEHIND_SWIPED_ITEM_ICON_DRAWABLE_ID_KEY = "behind_swiped_item_icon_drawable_id"
-        const val BEHIND_SWIPED_ITEM_ICON_SECONDARY_DRAWABLE_ID_KEY = "behind_swiped_item_icon_secondary_drawable_id"
+        const val BEHIND_SWIPED_ITEM_ICON_SECONDARY_DRAWABLE_ID_KEY =
+            "behind_swiped_item_icon_secondary_drawable_id"
         const val BEHIND_SWIPED_ITEM_ICON_MARGIN_KEY = "behind_swiped_item_icon_margin"
         const val BEHIND_SWIPED_ITEM_CENTER_ICON_KEY = "behind_swiped_item_center_icon"
         const val BEHIND_SWIPED_ITEM_BACKGROUND_COLOR_KEY = "behind_swiped_item_background_color"
-        const val BEHIND_SWIPED_ITEM_BACKGROUND_SECONDARY_COLOR_KEY = "behind_swiped_item_background_secondary_color"
+        const val BEHIND_SWIPED_ITEM_BACKGROUND_SECONDARY_COLOR_KEY =
+            "behind_swiped_item_background_secondary_color"
         const val BEHIND_SWIPED_ITEM_LAYOUT_ID_KEY = "behind_swiped_item_layout_id"
-        const val BEHIND_SWIPED_ITEM_SECONDARY_LAYOUT_ID_KEY = "behind_swiped_item_secondary_layout_id"
+        const val BEHIND_SWIPED_ITEM_SECONDARY_LAYOUT_ID_KEY =
+            "behind_swiped_item_secondary_layout_id"
         const val REDUCE_ITEM_ALPHA_ON_SWIPING_KEY = "reduce_item_alpha_on_swiping"
         const val LONG_PRESS_TO_START_DRAGGING_KEY = "long_press_to_start_dragging"
         const val NUM_OF_COLUMNS_PER_ROW_IN_GRID_LIST_KEY = "num_of_columns_per_row_in_grid_list"
