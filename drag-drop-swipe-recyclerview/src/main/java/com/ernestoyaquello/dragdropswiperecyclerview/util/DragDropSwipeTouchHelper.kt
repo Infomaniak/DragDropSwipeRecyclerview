@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeAdapter
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
-import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView.ListOrientation
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView.ListOrientation.DirectionFlag
 import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemSwipeListener.SwipeDirection
 
@@ -70,8 +69,8 @@ internal class DragDropSwipeTouchHelper(
         }
     }
 
-    internal var orientation: ListOrientation? = null
-    private val mOrientation: ListOrientation
+    internal var orientation: DragDropSwipeRecyclerView.ListOrientation? = null
+    private val mOrientation: DragDropSwipeRecyclerView.ListOrientation
         get() = orientation
             ?: throw NullPointerException("The orientation of the DragDropSwipeRecyclerView is not defined.")
 

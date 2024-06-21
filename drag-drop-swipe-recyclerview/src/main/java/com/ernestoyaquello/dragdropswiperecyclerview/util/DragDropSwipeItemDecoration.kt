@@ -78,7 +78,7 @@ internal class DragDropSwipeItemDecoration(var divider: Drawable) : RecyclerView
                     null -> {}
                 }
             }
-        } else throw TypeCastException("The recycler view must be an extension of DragDropSwipeRecyclerView.")
+        } else throw TypeCastException("The recycler view must be an extension of AsyncSwipeRecyclerView.")
     }
 
     private fun itemIsBeingMoved(parent: RecyclerView, child: View): Boolean {
