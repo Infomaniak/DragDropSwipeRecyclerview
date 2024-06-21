@@ -90,8 +90,7 @@ class HorizontalListFragment : BaseListFragment() {
                 list.behindSwipedItemIconSecondaryDrawableId = R.drawable.ic_archive_item
 
                 // In XML: app:behind_swiped_item_bg_color="@color/swipeBehindBackground"
-                list.behindSwipedItemBackgroundColor =
-                    ContextCompat.getColor(currentContext, R.color.swipeBehindBackground)
+                list.behindSwipedItemBackgroundColor = ContextCompat.getColor(currentContext, R.color.swipeBehindBackground)
 
                 // In XML: app:behind_swiped_item_bg_color_secondary="@color/swipeBehindBackgroundSecondary"
                 list.behindSwipedItemBackgroundSecondaryColor =
@@ -105,8 +104,7 @@ class HorizontalListFragment : BaseListFragment() {
                 list.behindSwipedItemLayoutId = R.layout.behind_swiped_horizontal_list
 
                 // In XML: app:behind_swiped_item_custom_layout_secondary="@layout/behind_swiped_horizontal_list_secondary"
-                list.behindSwipedItemSecondaryLayoutId =
-                    R.layout.behind_swiped_horizontal_list_secondary
+                list.behindSwipedItemSecondaryLayoutId = R.layout.behind_swiped_horizontal_list_secondary
             }
     }
 

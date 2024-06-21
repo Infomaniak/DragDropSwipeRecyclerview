@@ -120,24 +120,14 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         supportActionBar?.setHomeButtonEnabled(false)
         binding.seeLogButton.visibility = View.VISIBLE
-        binding.fab.setImageDrawable(
-            AppCompatResources.getDrawable(
-                applicationContext,
-                R.drawable.ic_new_item
-            )
-        )
+        binding.fab.setImageDrawable(AppCompatResources.getDrawable(applicationContext, R.drawable.ic_new_item))
     }
 
     private fun onNavigatedToLogFragment() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
         binding.seeLogButton.visibility = View.GONE
-        binding.fab.setImageDrawable(
-            AppCompatResources.getDrawable(
-                applicationContext,
-                R.drawable.ic_clear_items
-            )
-        )
+        binding.fab.setImageDrawable(AppCompatResources.getDrawable(applicationContext, R.drawable.ic_clear_items))
     }
 
     private fun isLogFragmentOpen() =
@@ -160,7 +150,6 @@ class MainActivity : AppCompatActivity() {
 
                 super.onOptionsItemSelected(item)
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }
