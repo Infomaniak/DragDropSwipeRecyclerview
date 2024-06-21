@@ -21,7 +21,6 @@ import com.infomaniak.dragdropswiperecyclerview.util.DragDropSwipeItemDecoration
 /**
  * Extension of RecyclerView that detects swipe, drag & drop and scrolling.
  */
-// TODO: Async version of this.
 open class DragDropSwipeRecyclerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

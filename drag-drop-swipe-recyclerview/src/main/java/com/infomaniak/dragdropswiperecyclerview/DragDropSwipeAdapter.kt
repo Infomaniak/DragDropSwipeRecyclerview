@@ -29,7 +29,7 @@ import kotlin.math.abs
  * @param U The type of the view holder.
  * @property dataSet The data set.
  */
-abstract class DragDropSwipeAdapter<T : Any, U : DragDropSwipeAdapter.ViewHolder>(
+abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     dataSet: List<T> = emptyList()
 ) : RecyclerView.Adapter<U>() {
 
@@ -43,7 +43,11 @@ abstract class DragDropSwipeAdapter<T : Any, U : DragDropSwipeAdapter.ViewHolder
             val asyncListDiffer = createAsyncListDiffer()
             mutableDataSet = value.toMutableList()
 
-            asyncListDiffer?.submitList(mutableDataSet)
+            if (asyncListDiffer != null) {
+                asyncListDiffer.submitList(mutableDataSet)
+            } else {
+                notifyDataSetChanged()
+            }
         }
 
     private val orientation: DragDropSwipeRecyclerView.ListOrientation
