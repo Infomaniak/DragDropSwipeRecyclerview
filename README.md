@@ -24,7 +24,7 @@ app's `build.gradle` file:
 ```
 dependencies {
     ...
-    implementation 'com.github.infomaniak.dragdropswiperecyclerview:drag-drop-swipe-recyclerview:0.0.1'
+    implementation 'com.github.infomaniak:drag-drop-swipe-recyclerview:0.0.1'
 }
 ```
 
@@ -41,10 +41,9 @@ Place the `DragDropSwipeRecyclerview` inside your layout using XML:
     xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.github.infomaniak.dragdropswiperecyclerview.DragDropSwipeRecyclerView
-        android:id="@+id/list" android:layout_width="match_parent"
-        android:layout_height="match_parent" app:item_layout="@layout/list_item_layout"
-        app:divider="@drawable/list_divider" />
+    <com.infomaniak.dragdropswiperecyclerview.DragDropSwipeRecyclerView android:id="@+id/list"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        app:item_layout="@layout/list_item_layout" app:divider="@drawable/list_divider" />
 
 </FrameLayout>
 ```
@@ -130,7 +129,7 @@ class MyAdapter(dataSet: List<String> = emptyList()) :
     override fun getViewToTouchToStartDraggingItem(
         item: String,
         viewHolder: MyAdapter.ViewHolder,
-        position: Int
+        position: Int,
     ): View? {
         // We return the view holder's view on which the user has to touch to drag the item
         return viewHolder.dragIcon
@@ -209,7 +208,7 @@ private val onItemSwipeListener = object : OnItemSwipeListener<String> {
     override fun onItemSwiped(
         position: Int,
         direction: OnItemSwipeListener.SwipeDirection,
-        item: String
+        item: String,
     ): Boolean {
         // Handle action of item swiped
         // Return false to indicate that the swiped item should be removed from the adapter's data set (default behaviour)
@@ -235,7 +234,7 @@ private val onListScrollListener = object : OnListScrollListener {
 
     override fun onListScrolled(
         scrollDirection: OnListScrollListener.ScrollDirection,
-        distance: Int
+        distance: Int,
     ) {
         // Handle scrolling
     }

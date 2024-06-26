@@ -32,7 +32,7 @@ android {
         }
     }
 
-    namespace 'com.github.infomaniak.dragdropswiperecyclerview'
+    namespace 'com.infomaniak.dragdropswiperecyclerview'
 }
 
 dependencies {
@@ -45,7 +45,7 @@ afterEvaluate {
         publications {
             maven(MavenPublication) {
                 from components.findByName('release')
-                groupId = 'com.github.infomaniak.dragdropswiperecyclerview'
+                groupId = 'com.github.infomaniak'
                 artifactId = 'drag-drop-swipe-recyclerview'
                 version = '0.0.1'
             }
