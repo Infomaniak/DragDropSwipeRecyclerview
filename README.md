@@ -24,7 +24,7 @@ app's `build.gradle` file:
 ```
 dependencies {
     ...
-    implementation 'com.github.infomaniak.dragdropswiperecyclerview:drag-drop-swipe-recyclerview:1.2.0'
+    implementation 'com.github.infomaniak.dragdropswiperecyclerview:drag-drop-swipe-recyclerview:0.0.1'
 }
 ```
 

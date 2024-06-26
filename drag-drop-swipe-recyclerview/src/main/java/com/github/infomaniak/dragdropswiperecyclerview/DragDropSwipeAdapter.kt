@@ -38,6 +38,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     private var mutableDataSet: MutableList<T> = dataSet.toMutableList()
     var dataSet: List<T>
         get() = mutableDataSet
+        @SuppressLint("NotifyDataSetChanged")
         set(value) {
             val diffUtil = createDiffUtil(mutableDataSet, value)
             mutableDataSet = value.toMutableList()
