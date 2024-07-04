@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.infomaniak.dragdropswiperecyclerview.DragDropSwipeRecyclerView.ListOrientation.DirectionFlag
 import com.infomaniak.dragdropswiperecyclerview.listener.OnItemDragListener
 import com.infomaniak.dragdropswiperecyclerview.listener.OnItemSwipeListener
-import com.infomaniak.dragdropswiperecyclerview.util.DragDropSwipeDiffCallback
 import com.infomaniak.dragdropswiperecyclerview.util.DragDropSwipeTouchHelper
 import com.infomaniak.dragdropswiperecyclerview.util.drawHorizontalDividers
 import com.infomaniak.dragdropswiperecyclerview.util.drawVerticalDividers

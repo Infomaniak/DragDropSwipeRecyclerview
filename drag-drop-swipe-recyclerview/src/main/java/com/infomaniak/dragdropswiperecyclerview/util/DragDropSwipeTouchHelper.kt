@@ -70,8 +70,8 @@ internal class DragDropSwipeTouchHelper(
         }
     }
 
-    internal var orientation: DragDropSwipeRecyclerView.ListOrientation? = null
-    private val mOrientation: DragDropSwipeRecyclerView.ListOrientation
+    internal var orientation: ListOrientation? = null
+    private val mOrientation: ListOrientation
         get() = orientation
             ?: throw NullPointerException("The orientation of the DragDropSwipeRecyclerView is not defined.")
 
