@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:showIn="@layout/activity_main">
 
-    <com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
+    <com.infomaniak.dragdropswiperecyclerview.DragDropSwipeRecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,7 +14,7 @@
         app:item_layout="@layout/list_item_grid_list_cardview"
         app:behind_swiped_item_custom_layout="@layout/behind_swiped_grid_list"
         app:behind_swiped_item_custom_layout_secondary="@layout/behind_swiped_grid_list_secondary"
-        app:swiped_item_opacity_fades_on_swiping="true"/>
+        app:swiped_item_opacity_fades_on_swiping="true" />
 
     <ProgressBar
         android:id="@+id/loading_indicator"
@@ -24,6 +24,6 @@
         android:indeterminate="true"
         android:scaleX="1.25"
         android:scaleY="1.25"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
 </FrameLayout>
