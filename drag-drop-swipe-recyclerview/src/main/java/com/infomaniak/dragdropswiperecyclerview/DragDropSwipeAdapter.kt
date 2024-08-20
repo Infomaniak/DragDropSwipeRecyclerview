@@ -8,14 +8,13 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.infomaniak.dragdropswiperecyclerview.DragDropSwipeRecyclerView.ListOrientation.DirectionFlag
 import com.infomaniak.dragdropswiperecyclerview.listener.OnItemDragListener
 import com.infomaniak.dragdropswiperecyclerview.listener.OnItemSwipeListener
-import com.infomaniak.dragdropswiperecyclerview.util.DragDropSwipeDiffCallback
 import com.infomaniak.dragdropswiperecyclerview.util.DragDropSwipeTouchHelper
 import com.infomaniak.dragdropswiperecyclerview.util.drawHorizontalDividers
 import com.infomaniak.dragdropswiperecyclerview.util.drawVerticalDividers
@@ -40,11 +39,11 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         get() = mutableDataSet
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
-            val diffUtil = createDiffUtil(mutableDataSet, value)
+            val asyncListDiffer = createAsyncListDiffer()
             mutableDataSet = value.toMutableList()
-            if (diffUtil != null) {
-                val diffResult = DiffUtil.calculateDiff(diffUtil)
-                diffResult.dispatchUpdatesTo(this)
+
+            if (asyncListDiffer != null) {
+                asyncListDiffer.submitList(mutableDataSet)
             } else {
                 notifyDataSetChanged()
             }
@@ -111,14 +110,9 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
      * If it returns null, no difference between the old items and the new ones will be calculated.
      * Null by default.
      *
-     * @param oldList The old list of items.
-     * @param newList The new list of items.
      * @return The implementation of DragDropSwipeDiffCallback<T> that will be used to compare items, if any.
      */
-    protected open fun createDiffUtil(
-        oldList: List<T>,
-        newList: List<T>
-    ): DragDropSwipeDiffCallback<T>? = null
+    protected open fun createAsyncListDiffer(): AsyncListDiffer<T>? = null
 
     /**
      * Called automatically to know if the specified item can be dragged.
@@ -330,29 +324,30 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         }
     }
 
-    private val stateChangeListener = object : DragDropSwipeTouchHelper.OnItemStateChangeListener {
-        @Suppress("UNCHECKED_CAST")
-        override fun onStateChanged(
-            newState: DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType,
-            viewHolder: RecyclerView.ViewHolder
-        ) {
+    private val stateChangeListener =
+        object : DragDropSwipeTouchHelper.OnItemStateChangeListener {
+            @Suppress("UNCHECKED_CAST")
+            override fun onStateChanged(
+                newState: DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType,
+                viewHolder: RecyclerView.ViewHolder
+            ) {
 
-            val dragDropSwipeViewHolder = viewHolder as U
-            when (newState) {
-                DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.DRAG_STARTED ->
-                    onDragStartedImpl(dragDropSwipeViewHolder)
+                val dragDropSwipeViewHolder = viewHolder as U
+                when (newState) {
+                    DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.DRAG_STARTED ->
+                        onDragStartedImpl(dragDropSwipeViewHolder)
 
-                DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.DRAG_FINISHED ->
-                    onDragFinishedImpl(dragDropSwipeViewHolder)
+                    DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.DRAG_FINISHED ->
+                        onDragFinishedImpl(dragDropSwipeViewHolder)
 
-                DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.SWIPE_STARTED ->
-                    onSwipeStartedImpl(dragDropSwipeViewHolder)
+                    DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.SWIPE_STARTED ->
+                        onSwipeStartedImpl(dragDropSwipeViewHolder)
 
-                DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.SWIPE_FINISHED ->
-                    onSwipeFinishedImpl(dragDropSwipeViewHolder)
+                    DragDropSwipeTouchHelper.OnItemStateChangeListener.StateChangeType.SWIPE_FINISHED ->
+                        onSwipeFinishedImpl(dragDropSwipeViewHolder)
+                }
             }
         }
-    }
 
     private val itemLayoutPositionListener =
         object : DragDropSwipeTouchHelper.OnItemLayoutPositionChangeListener {
@@ -871,48 +866,20 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         alpha: Float? = null
     ) {
 
-        list.dividerDrawable?.let { dividerDrawable ->
+        list.dividerDrawable?.let {
             when (orientation) {
                 DragDropSwipeRecyclerView.ListOrientation.VERTICAL_LIST_WITH_VERTICAL_DRAGGING,
                 DragDropSwipeRecyclerView.ListOrientation.VERTICAL_LIST_WITH_UNCONSTRAINED_DRAGGING ->
-                    drawHorizontalDividers(
-                        viewHolder.itemView,
-                        canvasOver,
-                        dividerDrawable,
-                        left,
-                        right,
-                        alpha = alpha
-                    )
+                    drawHorizontalDividers(viewHolder.itemView, canvasOver, it, left, right, alpha)
 
                 DragDropSwipeRecyclerView.ListOrientation.HORIZONTAL_LIST_WITH_UNCONSTRAINED_DRAGGING,
                 DragDropSwipeRecyclerView.ListOrientation.HORIZONTAL_LIST_WITH_HORIZONTAL_DRAGGING ->
-                    drawVerticalDividers(
-                        viewHolder.itemView,
-                        canvasOver,
-                        dividerDrawable,
-                        top,
-                        bottom,
-                        alpha = alpha
-                    )
+                    drawVerticalDividers(viewHolder.itemView, canvasOver, it, top, bottom, alpha)
 
                 DragDropSwipeRecyclerView.ListOrientation.GRID_LIST_WITH_HORIZONTAL_SWIPING,
                 DragDropSwipeRecyclerView.ListOrientation.GRID_LIST_WITH_VERTICAL_SWIPING -> {
-                    drawHorizontalDividers(
-                        viewHolder.itemView,
-                        canvasOver,
-                        dividerDrawable,
-                        left,
-                        right,
-                        alpha = alpha
-                    )
-                    drawVerticalDividers(
-                        viewHolder.itemView,
-                        canvasOver,
-                        dividerDrawable,
-                        top,
-                        bottom,
-                        alpha = alpha
-                    )
+                    drawHorizontalDividers(viewHolder.itemView, canvasOver, it, left, right, alpha)
+                    drawVerticalDividers(viewHolder.itemView, canvasOver, it, top, bottom, alpha)
                 }
             }
         }
