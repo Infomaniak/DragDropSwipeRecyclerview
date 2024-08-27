@@ -34,19 +34,18 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
 
     private var recyclerView: DragDropSwipeRecyclerView? = null
 
+    /**
+     * The implementation of DragDropSwipeDiffCallback<T> that will be used to compare items, if any.
+     */
+    open val asyncListDiffer: AsyncListDiffer<T>? = null
+
     private var mutableDataSet: MutableList<T> = dataSet.toMutableList()
     var dataSet: List<T>
         get() = mutableDataSet
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
-            val asyncListDiffer = createAsyncListDiffer()
             mutableDataSet = value.toMutableList()
-
-            if (asyncListDiffer != null) {
-                asyncListDiffer.submitList(mutableDataSet)
-            } else {
-                notifyDataSetChanged()
-            }
+            asyncListDiffer?.submitList(value) ?: notifyDataSetChanged()
         }
 
     private val orientation: DragDropSwipeRecyclerView.ListOrientation
@@ -103,16 +102,6 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         viewHolder: U,
         position: Int
     ): View?
-
-    /**
-     * Called automatically to get the DragDropSwipeDiffCallback<T> implementation that will be used
-     * to compare items when the data set is updated.
-     * If it returns null, no difference between the old items and the new ones will be calculated.
-     * Null by default.
-     *
-     * @return The implementation of DragDropSwipeDiffCallback<T> that will be used to compare items, if any.
-     */
-    protected open fun createAsyncListDiffer(): AsyncListDiffer<T>? = null
 
     /**
      * Called automatically to know if the specified item can be dragged.
