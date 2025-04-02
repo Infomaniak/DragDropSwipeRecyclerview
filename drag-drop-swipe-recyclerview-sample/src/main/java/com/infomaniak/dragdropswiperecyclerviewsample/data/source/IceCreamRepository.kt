@@ -3,6 +3,7 @@ package com.infomaniak.dragdropswiperecyclerviewsample.data.source
 import com.infomaniak.dragdropswiperecyclerviewsample.data.model.IceCream
 import com.infomaniak.dragdropswiperecyclerviewsample.data.source.base.BaseRepository
 import java.util.Random
+import java.util.UUID
 
 /**
  * A dummy repository with ice creams.
@@ -160,7 +161,7 @@ class IceCreamRepository : BaseRepository<IceCream>() {
         val blue = generateIceCreamBasicColor()
         val (enhancedRed, enhancedGreen, enhancedBlue) = enhanceColorIntensity(red, green, blue)
 
-        val iceCream = IceCream(iceCreamName, iceCreamPrice, enhancedRed, enhancedGreen, enhancedBlue)
+        val iceCream = IceCream(UUID.randomUUID(), iceCreamName, iceCreamPrice, enhancedRed, enhancedGreen, enhancedBlue)
 
         addItem(iceCream)
 

@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.widget.ImageViewCompat
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import com.infomaniak.dragdropswiperecyclerview.DragDropSwipeAdapter
 import com.infomaniak.dragdropswiperecyclerviewsample.R
 import com.infomaniak.dragdropswiperecyclerviewsample.data.model.IceCream
@@ -15,8 +17,24 @@ import com.infomaniak.dragdropswiperecyclerviewsample.util.Logger
 /**
  * Adapter for a list of ice creams.
  */
-class IceCreamListAdapter(dataSet: List<IceCream> = emptyList()) :
-    DragDropSwipeAdapter<IceCream, IceCreamListAdapter.ViewHolder>(dataSet) {
+class IceCreamListAdapter(
+    dataSet: List<IceCream> = emptyList(),
+) : DragDropSwipeAdapter<IceCream, IceCreamListAdapter.ViewHolder>(dataSet) {
+
+    class IceCreamDiffUtil : DiffUtil.ItemCallback<IceCream>() {
+
+        override fun areItemsTheSame(oldItem: IceCream, newItem: IceCream): Boolean = oldItem.uuid == newItem.uuid
+
+        override fun areContentsTheSame(oldItem: IceCream, newItem: IceCream): Boolean {
+            return oldItem.name == newItem.name &&
+                    oldItem.price == newItem.price &&
+                    oldItem.colorRed == newItem.colorRed &&
+                    oldItem.colorGreen == newItem.colorGreen &&
+                    oldItem.colorBlue == newItem.colorBlue
+        }
+    }
+
+    override val asyncListDiffer: AsyncListDiffer<IceCream> = AsyncListDiffer(this, IceCreamDiffUtil())
 
     class ViewHolder(iceCreamLayout: View) : DragDropSwipeAdapter.ViewHolder(iceCreamLayout) {
         val iceCreamNameView: TextView = itemView.findViewById(R.id.ice_cream_name)
@@ -30,12 +48,12 @@ class IceCreamListAdapter(dataSet: List<IceCream> = emptyList()) :
         return ViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(item: IceCream, viewHolder: ViewHolder, position: Int) {
-        val context = viewHolder.itemView.context
+    override fun onBindViewHolder(item: IceCream, viewHolder: ViewHolder, position: Int) = with(viewHolder) {
+        val context = itemView.context
 
         // Set ice cream name and price
-        viewHolder.iceCreamNameView.text = item.name
-        viewHolder.iceCreamPriceView.text = context.getString(R.string.priceFormat, item.price)
+        iceCreamNameView.text = item.name
+        iceCreamPriceView.text = context.getString(R.string.priceFormat, item.price)
 
         // Set ice cream icon color
         val red = (item.colorRed * 255).toInt()
@@ -43,23 +61,19 @@ class IceCreamListAdapter(dataSet: List<IceCream> = emptyList()) :
         val blue = (item.colorBlue * 255).toInt()
 
         // Set the icon/image color
-        if (viewHolder.iceCreamIcon != null) {
-            val iceCreamIconColor = Color.rgb(red, green, blue)
-            ImageViewCompat.setImageTintList(
-                viewHolder.iceCreamIcon,
-                ColorStateList.valueOf(iceCreamIconColor)
-            )
-        } else if (viewHolder.iceCreamPhotoFilter != null) {
-            val iceCreamPhotoFilter = Color.argb(128, red, green, blue)
-            viewHolder.iceCreamPhotoFilter.setBackgroundColor(iceCreamPhotoFilter)
+        when {
+            iceCreamIcon != null -> {
+                val iceCreamIconColor = Color.rgb(red, green, blue)
+                ImageViewCompat.setImageTintList(iceCreamIcon, ColorStateList.valueOf(iceCreamIconColor))
+            }
+            iceCreamPhotoFilter != null -> {
+                val iceCreamPhotoFilterColor = Color.argb(128, red, green, blue)
+                iceCreamPhotoFilter.setBackgroundColor(iceCreamPhotoFilterColor)
+            }
         }
     }
 
-    override fun getViewToTouchToStartDraggingItem(
-        item: IceCream,
-        viewHolder: ViewHolder,
-        position: Int
-    ) = viewHolder.dragIcon
+    override fun getViewToTouchToStartDraggingItem(item: IceCream, viewHolder: ViewHolder, position: Int) = viewHolder.dragIcon
 
     override fun onDragStarted(item: IceCream, viewHolder: ViewHolder) {
         Logger.log("Dragging started on ${item.name}")
@@ -76,10 +90,10 @@ class IceCreamListAdapter(dataSet: List<IceCream> = emptyList()) :
         offsetY: Int,
         canvasUnder: Canvas?,
         canvasOver: Canvas?,
-        isUserControlled: Boolean
+        isUserControlled: Boolean,
     ) {
         // Call commented out to avoid saturating the log
-        //Logger.log("The ${if (isUserControlled) "User" else "System"} is dragging ${item.name} (offset X: $offsetX, offset Y: $offsetY)")
+        // Logger.log("The ${if (isUserControlled) "User" else "System"} is dragging ${item.name} (offset X: $offsetX, offset Y: $offsetY)")
     }
 
     override fun onIsSwiping(
@@ -89,10 +103,10 @@ class IceCreamListAdapter(dataSet: List<IceCream> = emptyList()) :
         offsetY: Int,
         canvasUnder: Canvas?,
         canvasOver: Canvas?,
-        isUserControlled: Boolean
+        isUserControlled: Boolean,
     ) {
         // Call commented out to avoid saturating the log
-        //Logger.log("The ${if (isUserControlled) "User" else "System"} is swiping ${item?.name} (offset X: $offsetX, offset Y: $offsetY)")
+        // Logger.log("The ${if (isUserControlled) "User" else "System"} is swiping ${item?.name} (offset X: $offsetX, offset Y: $offsetY)")
     }
 
     override fun onDragFinished(item: IceCream, viewHolder: ViewHolder) {
