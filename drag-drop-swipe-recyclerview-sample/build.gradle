@@ -28,6 +28,8 @@ android {
         targetCompatibility rootProject.ext.javaVersion
     }
 
+    kotlinOptions { jvmTarget = rootProject.ext.javaVersion }
+
     namespace 'com.infomaniak.dragdropswiperecyclerviewsample'
 }
 
