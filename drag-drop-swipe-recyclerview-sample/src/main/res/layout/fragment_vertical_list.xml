@@ -11,23 +11,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        app:item_layout="@layout/list_item_vertical_list"
-        app:divider="@drawable/divider_vertical_list"
         app:behind_swiped_item_bg_color="@color/swipeBehindBackground"
         app:behind_swiped_item_bg_color_secondary="@color/swipeBehindBackgroundSecondary"
         app:behind_swiped_item_icon="@drawable/ic_remove_item"
-        app:behind_swiped_item_icon_secondary="@drawable/ic_archive_item"
+        app:behind_swiped_item_icon_centered="false"
         app:behind_swiped_item_icon_margin="@dimen/spacing_normal"
-        app:behind_swiped_item_icon_centered="false" />
+        app:behind_swiped_item_icon_secondary="@drawable/ic_archive_item"
+        app:divider="@drawable/divider_vertical_list"
+        app:item_layout="@layout/list_item_vertical_list" />
 
     <ProgressBar
         android:id="@+id/loading_indicator"
         style="@style/Base.Widget.AppCompat.ProgressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:indeterminate="true"
         android:scaleX="1.25"
-        android:scaleY="1.25"
-        android:layout_gravity="center" />
+        android:scaleY="1.25" />
 
 </FrameLayout>

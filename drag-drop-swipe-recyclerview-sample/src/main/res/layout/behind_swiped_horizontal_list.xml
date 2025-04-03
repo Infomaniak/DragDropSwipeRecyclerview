@@ -5,18 +5,18 @@
     android:layout_height="match_parent"
     android:padding="0dp"
     app:cardBackgroundColor="@color/swipeBehindBackground"
-    app:cardElevation="0dp"
     app:cardCornerRadius="8dp"
+    app:cardElevation="0dp"
     app:contentPadding="0dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_gravity="center"
         android:gravity="center"
+        android:orientation="vertical"
         android:paddingTop="@dimen/spacing_small"
-        android:paddingBottom="@dimen/spacing_normal"
-        android:layout_gravity="center">
+        android:paddingBottom="@dimen/spacing_normal">
 
         <ImageView
             android:id="@+id/drag_icon"
@@ -25,15 +25,15 @@
             android:paddingTop="@dimen/spacing_small"
             android:paddingBottom="@dimen/spacing_micro"
             android:src="@drawable/ic_remove_item"
-            app:tint="@color/swipeBehindTextColor"/>
+            app:tint="@color/swipeBehindTextColor" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/swipeBehindTextColor"
+            android:text="@string/generic_delete"
             android:textAllCaps="true"
-            android:textStyle="bold"
-            android:text="@string/generic_delete"/>
+            android:textColor="@color/swipeBehindTextColor"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
