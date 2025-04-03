@@ -192,9 +192,9 @@ class IceCreamRepository : BaseRepository<IceCream>() {
 
     private fun generateIceCreamName() = "${adjectives.shuffled().take(1)[0]} ${names.shuffled().take(1)[0]}"
 
-    private fun generateIceCreamPrice() = (80..500).random().toFloat() / 100f
+    private fun generateIceCreamPrice() = (80..500).random().toFloat() / 100.0f
 
-    private fun generateIceCreamBasicColor() = (80..210).random().toFloat() / 255f
+    private fun generateIceCreamBasicColor() = (80..210).random().toFloat() / 255.0f
 
     private fun ClosedRange<Int>.random() = Random().nextInt((endInclusive + 1) - start) + start
 

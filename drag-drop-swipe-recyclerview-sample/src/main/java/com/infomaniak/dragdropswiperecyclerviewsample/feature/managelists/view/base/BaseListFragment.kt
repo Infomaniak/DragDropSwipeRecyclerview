@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.Snackbar
 import com.infomaniak.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.infomaniak.dragdropswiperecyclerview.listener.OnItemDragListener
 import com.infomaniak.dragdropswiperecyclerview.listener.OnItemSwipeListener
@@ -28,7 +29,6 @@ import com.infomaniak.dragdropswiperecyclerviewsample.feature.managelists.view.G
 import com.infomaniak.dragdropswiperecyclerviewsample.feature.managelists.view.HorizontalListFragment
 import com.infomaniak.dragdropswiperecyclerviewsample.feature.managelists.view.VerticalListFragment
 import com.infomaniak.dragdropswiperecyclerviewsample.util.Logger
-import com.google.android.material.snackbar.Snackbar
 
 /**
  * The base implementation of a fragment that displays a list of ice creams.
@@ -54,11 +54,7 @@ abstract class BaseListFragment : Fragment() {
         ): Boolean {
             when (direction) {
                 OnItemSwipeListener.SwipeDirection.RIGHT_TO_LEFT -> onItemSwipedLeft(item, position)
-                OnItemSwipeListener.SwipeDirection.LEFT_TO_RIGHT -> onItemSwipedRight(
-                    item,
-                    position
-                )
-
+                OnItemSwipeListener.SwipeDirection.LEFT_TO_RIGHT -> onItemSwipedRight(item, position)
                 OnItemSwipeListener.SwipeDirection.DOWN_TO_UP -> onItemSwipedUp(item, position)
                 OnItemSwipeListener.SwipeDirection.UP_TO_DOWN -> onItemSwipedDown(item, position)
             }
@@ -88,15 +84,12 @@ abstract class BaseListFragment : Fragment() {
     private val onListScrollListener = object : OnListScrollListener {
         override fun onListScrollStateChanged(scrollState: OnListScrollListener.ScrollState) {
             // Call commented out to avoid saturating the log
-            //Logger.log("List scroll state changed to $scrollState")
+            // Logger.log("List scroll state changed to $scrollState")
         }
 
-        override fun onListScrolled(
-            scrollDirection: OnListScrollListener.ScrollDirection,
-            distance: Int
-        ) {
+        override fun onListScrolled(scrollDirection: OnListScrollListener.ScrollDirection, distance: Int) {
             // Call commented out to avoid saturating the log
-            //Logger.log("List scrolled $distance pixels $scrollDirection")
+            // Logger.log("List scrolled $distance pixels $scrollDirection")
         }
     }
 
@@ -105,7 +98,6 @@ abstract class BaseListFragment : Fragment() {
             // Add the item to the adapter's data set if necessary
             if (!adapter.dataSet.contains(item)) {
                 Logger.log("Added new item $item")
-
                 adapter.insertItem(position, item)
 
                 // We scroll to the position of the added item (positions match in both adapter and repository)
@@ -116,15 +108,10 @@ abstract class BaseListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         // Set root view for the fragment and find the views
         _binding = inflateViewBinding(inflater, container)
@@ -278,60 +265,55 @@ abstract class BaseListFragment : Fragment() {
         loadData()
 
         // Hide loader view after a small delay to simulate real data retrieval
-        Handler(Looper.getMainLooper()).postDelayed({
-            loadingIndicator.visibility = View.GONE
-            list.visibility = View.VISIBLE
-        }, 150)
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+                loadingIndicator.visibility = View.GONE
+                list.visibility = View.VISIBLE
+            },
+            150L,
+        )
     }
 
     private fun loadData() {
         adapter.dataSet = repository.getAllItems()
     }
 
-    private fun onItemSwipedLeft(item: IceCream, position: Int) {
-        Logger.log("$item (position $position) swiped to the left")
-
-        removeItem(item, position)
-    }
-
     private fun onItemSwipedRight(item: IceCream, position: Int) {
         Logger.log("$item (position $position) swiped to the right")
-
         archiveItem(item, position)
     }
 
     private fun onItemSwipedUp(item: IceCream, position: Int) {
         Logger.log("$item (position $position) swiped up")
-
         archiveItem(item, position)
+    }
+
+    private fun onItemSwipedLeft(item: IceCream, position: Int) {
+        Logger.log("$item (position $position) swiped to the left")
+        removeItem(item, position)
     }
 
     private fun onItemSwipedDown(item: IceCream, position: Int) {
         Logger.log("$item (position $position) swiped down")
-
         removeItem(item, position)
     }
 
     private fun removeItem(item: IceCream, position: Int) {
         Logger.log("Removed item $item")
-
         removeItemFromList(item, position, R.string.itemRemovedMessage)
     }
 
     private fun archiveItem(item: IceCream, position: Int) {
         Logger.log("Archived item $item")
-
         removeItemFromList(item, position, R.string.itemArchivedMessage)
     }
 
     private fun removeItemFromList(item: IceCream, position: Int, stringResourceId: Int) {
         repository.removeItem(item)
 
-        val itemSwipedSnackBar =
-            Snackbar.make(binding.root, getString(stringResourceId, item), Snackbar.LENGTH_SHORT)
+        val itemSwipedSnackBar = Snackbar.make(binding.root, getString(stringResourceId, item), Snackbar.LENGTH_SHORT)
         itemSwipedSnackBar.setAction(getString(R.string.undoCaps)) {
             Logger.log("UNDO: $item has been added back to the list in the position $position")
-
             repository.insertItem(item, position)
         }
         itemSwipedSnackBar.show()
