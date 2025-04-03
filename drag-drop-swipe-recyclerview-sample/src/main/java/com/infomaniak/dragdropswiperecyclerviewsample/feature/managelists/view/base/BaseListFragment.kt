@@ -101,7 +101,7 @@ abstract class BaseListFragment : Fragment() {
                 adapter.insertItem(position, item)
 
                 // We scroll to the position of the added item (positions match in both adapter and repository)
-                list.smoothScrollToPosition(position)
+                // list.smoothScrollToPosition(position)
             }
         }
     }
@@ -275,7 +275,7 @@ abstract class BaseListFragment : Fragment() {
     }
 
     private fun loadData() {
-        adapter.dataSet = repository.getAllItems()
+        adapter.setList(repository.getAllItems())
     }
 
     private fun onItemSwipedRight(item: IceCream, position: Int) {
