@@ -275,7 +275,7 @@ abstract class BaseListFragment : Fragment() {
     }
 
     private fun loadData() {
-        adapter.dataSet = repository.getAllItems()
+        adapter.setList(repository.getAllItems())
     }
 
     private fun onItemSwipedRight(item: IceCream, position: Int) {
