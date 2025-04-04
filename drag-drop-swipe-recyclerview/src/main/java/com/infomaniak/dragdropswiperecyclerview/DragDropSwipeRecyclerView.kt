@@ -606,23 +606,19 @@ open class DragDropSwipeRecyclerView @JvmOverloads constructor(
     override fun setLayoutManager(layoutManager: LayoutManager?) {
         super.setLayoutManager(layoutManager)
 
+        if (orientation != null) return
+
         // If the orientation is undefined, we try to guess it
-        if (orientation == null) {
-            when (layoutManager) {
-                is GridLayoutManager -> {
-                    orientation = when (layoutManager.orientation) {
-                        VERTICAL -> ListOrientation.GRID_LIST_WITH_HORIZONTAL_SWIPING
-                        HORIZONTAL -> ListOrientation.GRID_LIST_WITH_VERTICAL_SWIPING
-                        else -> orientation
-                    }
-                }
-                is LinearLayoutManager -> {
-                    orientation = when (layoutManager.orientation) {
-                        VERTICAL -> ListOrientation.VERTICAL_LIST_WITH_VERTICAL_DRAGGING
-                        HORIZONTAL -> ListOrientation.HORIZONTAL_LIST_WITH_UNCONSTRAINED_DRAGGING
-                        else -> orientation
-                    }
-                }
+        when (layoutManager) {
+            is GridLayoutManager -> orientation = when (layoutManager.orientation) {
+                VERTICAL -> ListOrientation.GRID_LIST_WITH_HORIZONTAL_SWIPING
+                HORIZONTAL -> ListOrientation.GRID_LIST_WITH_VERTICAL_SWIPING
+                else -> orientation
+            }
+            is LinearLayoutManager -> orientation = when (layoutManager.orientation) {
+                VERTICAL -> ListOrientation.VERTICAL_LIST_WITH_VERTICAL_DRAGGING
+                HORIZONTAL -> ListOrientation.HORIZONTAL_LIST_WITH_UNCONSTRAINED_DRAGGING
+                else -> orientation
             }
         }
     }
