@@ -4,28 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spacing_smaller_x2"
+    android:layout_marginLeft="@dimen/spacing_smaller_x2"
+    android:layout_marginTop="@dimen/spacing_small"
+    android:layout_marginEnd="@dimen/spacing_smaller_x2"
+    android:layout_marginRight="@dimen/spacing_smaller_x2"
+    android:layout_marginBottom="@dimen/spacing_small"
     android:background="@color/listItemBackground"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:gravity="center"
-    android:layout_marginTop="@dimen/spacing_small"
-    android:layout_marginBottom="@dimen/spacing_small"
-    android:layout_marginLeft="@dimen/spacing_smaller_x2"
-    android:layout_marginRight="@dimen/spacing_smaller_x2"
-    android:layout_marginStart="@dimen/spacing_smaller_x2"
-    android:layout_marginEnd="@dimen/spacing_smaller_x2"
     android:padding="0dp"
-    app:cardElevation="4dp"
     app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
     app:contentPadding="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
         android:layout_margin="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
         android:padding="0dp">
 
         <FrameLayout
@@ -41,50 +41,50 @@
                 android:layout_margin="0dp"
                 android:padding="0dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ice_cream_photo"/>
+                android:src="@drawable/ice_cream_photo" />
 
             <View
                 android:id="@+id/ice_cream_photo_filter"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
-                tools:background="#80251099"/>
+                tools:background="#80251099" />
 
         </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/listItemBackground"
-            android:orientation="horizontal"
-            android:gravity="center"
             android:layout_margin="0dp"
+            android:background="@color/listItemBackground"
+            android:gravity="center"
+            android:orientation="horizontal"
             android:padding="0dp">
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
                 android:paddingStart="@dimen/spacing_normal"
-                android:paddingEnd="@dimen/spacing_small"
                 android:paddingTop="@dimen/spacing_small"
-                android:paddingBottom="@dimen/spacing_small"
-                android:orientation="vertical">
+                android:paddingEnd="@dimen/spacing_small"
+                android:paddingBottom="@dimen/spacing_small">
 
                 <TextView
                     android:id="@+id/ice_cream_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="#000000"
                     android:ellipsize="end"
-                    tools:text="Dark Chocolate Ice Cream"/>
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    tools:text="Dark Chocolate Ice Cream" />
 
                 <TextView
                     android:id="@+id/ice_cream_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    tools:text="$2.85"/>
+                    tools:text="$2.85" />
 
             </LinearLayout>
 
@@ -92,12 +92,12 @@
                 android:id="@+id/drag_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:paddingLeft="@dimen/spacing_small"
-                android:paddingRight="@dimen/spacing_small"
-                android:paddingStart="@dimen/spacing_small"
-                android:paddingEnd="@dimen/spacing_small"
                 android:foregroundGravity="right"
-                android:src="@drawable/ic_drag"/>
+                android:paddingStart="@dimen/spacing_small"
+                android:paddingLeft="@dimen/spacing_small"
+                android:paddingEnd="@dimen/spacing_small"
+                android:paddingRight="@dimen/spacing_small"
+                android:src="@drawable/ic_drag" />
 
         </LinearLayout>
 

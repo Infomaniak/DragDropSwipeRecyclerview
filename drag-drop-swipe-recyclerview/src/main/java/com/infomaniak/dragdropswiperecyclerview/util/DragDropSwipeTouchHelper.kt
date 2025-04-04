@@ -112,45 +112,39 @@ internal class DragDropSwipeTouchHelper(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
     ): Int {
-        if (viewHolder is DragDropSwipeAdapter.ViewHolder) {
-            return makeMovementFlags(
+        return if (viewHolder is DragDropSwipeAdapter.ViewHolder) {
+            makeMovementFlags(
                 if (viewHolder.canBeDragged?.invoke() == true) mOrientation.dragFlagsValue xor disabledDragFlagsValue else 0,
-                if (viewHolder.canBeSwiped?.invoke() == true) mOrientation.swipeFlagsValue xor disabledSwipeFlagsValue else 0
+                if (viewHolder.canBeSwiped?.invoke() == true) mOrientation.swipeFlagsValue xor disabledSwipeFlagsValue else 0,
             )
+        } else {
+            0
         }
-
-        return 0
     }
 
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
+        target: RecyclerView.ViewHolder,
     ): Boolean {
-        itemDragListener.onItemDragged(
-            viewHolder.bindingAdapterPosition,
-            target.bindingAdapterPosition
-        )
-
+        itemDragListener.onItemDragged(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
         return true
     }
 
     override fun canDropOver(
         recyclerView: RecyclerView,
         current: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
-    ) =
-        (target as? DragDropSwipeAdapter.ViewHolder)?.canBeDroppedOver?.invoke() == true
+        target: RecyclerView.ViewHolder,
+    ) = (target as? DragDropSwipeAdapter.ViewHolder)?.canBeDroppedOver?.invoke() == true
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.bindingAdapterPosition
-        val swipeDirection =
-            when (direction) {
-                ItemTouchHelper.LEFT -> SwipeDirection.RIGHT_TO_LEFT
-                ItemTouchHelper.RIGHT -> SwipeDirection.LEFT_TO_RIGHT
-                ItemTouchHelper.UP -> SwipeDirection.DOWN_TO_UP
-                else -> SwipeDirection.UP_TO_DOWN
-            }
+        val swipeDirection = when (direction) {
+            ItemTouchHelper.LEFT -> SwipeDirection.RIGHT_TO_LEFT
+            ItemTouchHelper.RIGHT -> SwipeDirection.LEFT_TO_RIGHT
+            ItemTouchHelper.UP -> SwipeDirection.DOWN_TO_UP
+            else -> SwipeDirection.UP_TO_DOWN
+        }
 
         itemSwipeListener.onItemSwiped(position, swipeDirection)
     }

@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.elevation = 0f
+        supportActionBar?.elevation = 0.0f
         window.navigationBarColor = Color.BLACK
 
         setupLog()
@@ -134,8 +134,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun isLogFragmentOpen() =
-        supportFragmentManager.findFragmentByTag(LogFragment.TAG) != null
+    private fun isLogFragmentOpen() = supportFragmentManager.findFragmentByTag(LogFragment.TAG) != null
 
     private fun replaceFragment(fragment: Fragment, tag: String) {
         supportFragmentManager.beginTransaction().apply {
@@ -148,10 +147,8 @@ class MainActivity : AppCompatActivity() {
             android.R.id.home -> {
                 if (isLogFragmentOpen()) {
                     navigateToListFragment()
-
                     return true
                 }
-
                 super.onOptionsItemSelected(item)
             }
 
@@ -160,9 +157,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (isLogFragmentOpen())
-            navigateToListFragment()
-        else
-            super.onBackPressed()
+        if (isLogFragmentOpen()) navigateToListFragment() else super.onBackPressed()
     }
 }
