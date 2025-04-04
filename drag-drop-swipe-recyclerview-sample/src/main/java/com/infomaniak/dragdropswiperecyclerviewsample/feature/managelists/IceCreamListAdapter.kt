@@ -26,11 +26,13 @@ class IceCreamListAdapter(
         override fun areItemsTheSame(oldItem: IceCream, newItem: IceCream): Boolean = oldItem.uuid == newItem.uuid
 
         override fun areContentsTheSame(oldItem: IceCream, newItem: IceCream): Boolean {
-            return oldItem.name == newItem.name &&
-                    oldItem.price == newItem.price &&
-                    oldItem.colorRed == newItem.colorRed &&
+            val isColorIdentical = oldItem.colorRed == newItem.colorRed &&
                     oldItem.colorGreen == newItem.colorGreen &&
                     oldItem.colorBlue == newItem.colorBlue
+
+            return oldItem.name == newItem.name &&
+                    oldItem.price == newItem.price &&
+                    isColorIdentical
         }
     }
 
