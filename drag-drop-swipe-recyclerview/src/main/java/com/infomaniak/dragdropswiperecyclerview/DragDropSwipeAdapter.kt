@@ -39,7 +39,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
      */
     open val asyncListDiffer: AsyncListDiffer<T>? = null
 
-    private var mutableItems: MutableList<T> = defaultItems.toMutableList()
+    private val mutableItems: MutableList<T> = defaultItems.toMutableList()
 
     val items: List<T> get() = asyncListDiffer?.currentList ?: mutableItems
 
@@ -448,7 +448,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
 
     fun addItem(item: T) {
         mutableItems.add(item)
-        asyncListDiffer?.submitList(mutableItems.toList()) ?: notifyItemInserted(mutableItems.indexOf(item))
+        asyncListDiffer?.submitList(mutableItems.toList()) ?: notifyItemInserted(mutableItems.lastIndex)
     }
 
     @SuppressLint("NotifyDataSetChanged")
