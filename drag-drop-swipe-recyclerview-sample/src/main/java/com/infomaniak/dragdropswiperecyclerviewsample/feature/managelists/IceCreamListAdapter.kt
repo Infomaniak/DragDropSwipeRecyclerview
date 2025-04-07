@@ -23,7 +23,9 @@ class IceCreamListAdapter(
 
     class IceCreamDiffUtil : DiffUtil.ItemCallback<IceCream>() {
 
-        override fun areItemsTheSame(oldItem: IceCream, newItem: IceCream): Boolean = oldItem.uuid == newItem.uuid
+        override fun areItemsTheSame(oldItem: IceCream, newItem: IceCream): Boolean {
+            return oldItem.uuid == newItem.uuid
+        }
 
         override fun areContentsTheSame(oldItem: IceCream, newItem: IceCream): Boolean {
             val isColorIdentical = oldItem.colorRed == newItem.colorRed &&

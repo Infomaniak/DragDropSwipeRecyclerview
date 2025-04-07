@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        app:item_layout="@layout/list_item_horizontal_list_cardview"
         app:behind_swiped_item_custom_layout="@layout/behind_swiped_horizontal_list"
         app:behind_swiped_item_custom_layout_secondary="@layout/behind_swiped_horizontal_list_secondary"
+        app:item_layout="@layout/list_item_horizontal_list_cardview"
         app:swiped_item_opacity_fades_on_swiping="true" />
 
     <ProgressBar
@@ -21,9 +21,9 @@
         style="@style/Base.Widget.AppCompat.ProgressBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:indeterminate="true"
         android:scaleX="1.25"
-        android:scaleY="1.25"
-        android:layout_gravity="center" />
+        android:scaleY="1.25" />
 
 </FrameLayout>
