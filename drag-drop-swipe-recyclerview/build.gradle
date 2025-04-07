@@ -45,7 +45,7 @@ afterEvaluate {
             maven(MavenPublication) {
                 from components.findByName('release')
                 groupId = 'com.github.infomaniak'
-                artifactId = 'drag-drop-swipe-recyclerview'
+                artifactId = 'DragDropSwipeRecyclerview'
                 version = '1.0.0'
             }
         }
