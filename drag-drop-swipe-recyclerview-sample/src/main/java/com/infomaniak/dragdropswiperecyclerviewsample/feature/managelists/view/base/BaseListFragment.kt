@@ -96,7 +96,7 @@ abstract class BaseListFragment : Fragment() {
     private val onItemAddedListener = object : BaseRepository.OnItemAdditionListener<IceCream> {
         override fun onItemAdded(item: IceCream, position: Int) {
             // Add the item to the adapter's data set if necessary
-            if (!adapter.dataSet.contains(item)) {
+            if (!adapter.items.contains(item)) {
                 Logger.log("Added new item $item")
                 adapter.insertItem(position, item)
 
@@ -275,7 +275,7 @@ abstract class BaseListFragment : Fragment() {
     }
 
     private fun loadData() {
-        adapter.dataSet = repository.getAllItems()
+        adapter.setItems(repository.getAllItems())
     }
 
     private fun onItemSwipedRight(item: IceCream, position: Int) {
