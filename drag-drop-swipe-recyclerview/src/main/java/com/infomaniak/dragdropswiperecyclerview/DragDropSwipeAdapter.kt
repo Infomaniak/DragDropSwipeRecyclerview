@@ -26,10 +26,10 @@ import kotlin.math.abs
  *
  * @param T The type of the item.
  * @param U The type of the view holder.
- * @property dataSet The data set.
+ * @property defaultItems The default data set.
  */
 abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
-    defaultDataSet: List<T> = emptyList(),
+    defaultItems: List<T> = emptyList(),
 ) : RecyclerView.Adapter<U>() {
 
     private var recyclerView: DragDropSwipeRecyclerView? = null
@@ -39,9 +39,9 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
      */
     open val asyncListDiffer: AsyncListDiffer<T>? = null
 
-    private var mutableDataSet: MutableList<T> = defaultDataSet.toMutableList()
+    private var mutableItems: MutableList<T> = defaultItems.toMutableList()
 
-    val dataSet: List<T> get() = asyncListDiffer?.currentList ?: mutableDataSet
+    val items: List<T> get() = asyncListDiffer?.currentList ?: mutableItems
 
     private val orientation: DragDropSwipeRecyclerView.ListOrientation
         get() = recyclerView?.orientation
@@ -273,7 +273,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
 
     private val itemDragListener = object : DragDropSwipeTouchHelper.OnItemDragListener {
         override fun onItemDragged(previousPosition: Int, newPosition: Int) {
-            val item = dataSet[previousPosition]
+            val item = items[previousPosition]
             onListItemDragged(previousPosition, newPosition)
             dragListener?.onItemDragged(previousPosition, newPosition, item)
         }
@@ -281,14 +281,14 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         override fun onItemDropped(initialPosition: Int, finalPosition: Int) {
             if (finalPosition == NO_POSITION) return
 
-            val item = dataSet[finalPosition]
+            val item = items[finalPosition]
             dragListener?.onItemDropped(initialPosition, finalPosition, item)
         }
     }
 
     private val itemSwipeListener = object : DragDropSwipeTouchHelper.OnItemSwipeListener {
         override fun onItemSwiped(position: Int, direction: OnItemSwipeListener.SwipeDirection) {
-            val item = dataSet[position]
+            val item = items[position]
             if (swipeListener?.onItemSwiped(position, direction, item) != true) onListItemSwiped(position)
         }
     }
@@ -352,7 +352,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         itemTouchHelper = ItemTouchHelper(swipeAndDragHelper)
     }
 
-    override fun getItemCount() = dataSet.count()
+    override fun getItemCount() = items.count()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): U {
         val itemLayoutId = recyclerView?.itemLayoutId ?: 0
@@ -365,7 +365,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     }
 
     override fun onBindViewHolder(holder: U, position: Int) {
-        val item = dataSet[position]
+        val item = items[position]
 
         holder.apply {
             // Setting these lambdas here instead of only once inside onCreateViewHolder() to make
@@ -373,21 +373,21 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
             canBeDragged = holder.canBeDragged ?: {
                 val viewHolderPosition = holder.bindingAdapterPosition
                 if (viewHolderPosition != NO_POSITION) {
-                    val viewHolderItem = dataSet[viewHolderPosition]
+                    val viewHolderItem = items[viewHolderPosition]
                     canBeDragged(viewHolderItem, holder, viewHolderPosition)
                 } else false
             }
             canBeDroppedOver = holder.canBeDroppedOver ?: {
                 val viewHolderPosition = holder.bindingAdapterPosition
                 if (viewHolderPosition != NO_POSITION) {
-                    val viewHolderItem = dataSet[viewHolderPosition]
+                    val viewHolderItem = items[viewHolderPosition]
                     canBeDroppedOver(viewHolderItem, holder, viewHolderPosition)
                 } else false
             }
             canBeSwiped = holder.canBeSwiped ?: {
                 val viewHolderPosition = holder.bindingAdapterPosition
                 if (viewHolderPosition != NO_POSITION) {
-                    val viewHolderItem = dataSet[viewHolderPosition]
+                    val viewHolderItem = items[viewHolderPosition]
                     canBeSwiped(viewHolderItem, holder, viewHolderPosition)
                 } else false
             }
@@ -421,7 +421,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     }
 
     fun moveItem(newPosition: Int, item: T) {
-        val previousPosition = mutableDataSet.indexOf(item)
+        val previousPosition = mutableItems.indexOf(item)
         if (previousPosition != -1) {
             moveItem(previousPosition, newPosition)
         } else {
@@ -430,32 +430,32 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     }
 
     fun moveItem(previousPosition: Int, newPosition: Int) {
-        val item = mutableDataSet[previousPosition]
-        mutableDataSet.removeAt(previousPosition)
-        mutableDataSet.add(newPosition, item)
-        asyncListDiffer?.submitList(mutableDataSet.toList()) ?: notifyItemMoved(previousPosition, newPosition)
+        val item = mutableItems[previousPosition]
+        mutableItems.removeAt(previousPosition)
+        mutableItems.add(newPosition, item)
+        asyncListDiffer?.submitList(mutableItems.toList()) ?: notifyItemMoved(previousPosition, newPosition)
     }
 
     fun removeItem(position: Int) {
-        mutableDataSet.removeAt(position)
-        asyncListDiffer?.submitList(mutableDataSet.toList()) ?: notifyItemRemoved(position)
+        mutableItems.removeAt(position)
+        asyncListDiffer?.submitList(mutableItems.toList()) ?: notifyItemRemoved(position)
     }
 
     fun insertItem(position: Int, item: T) {
-        mutableDataSet.add(position, item)
-        asyncListDiffer?.submitList(mutableDataSet.toList()) ?: notifyItemInserted(position)
+        mutableItems.add(position, item)
+        asyncListDiffer?.submitList(mutableItems.toList()) ?: notifyItemInserted(position)
     }
 
     fun addItem(item: T) {
-        mutableDataSet.add(item)
-        asyncListDiffer?.submitList(mutableDataSet.toList()) ?: notifyItemInserted(mutableDataSet.indexOf(item))
+        mutableItems.add(item)
+        asyncListDiffer?.submitList(mutableItems.toList()) ?: notifyItemInserted(mutableItems.indexOf(item))
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setList(items: List<T>) {
-        mutableDataSet.clear()
-        mutableDataSet.addAll(items)
-        asyncListDiffer?.submitList(mutableDataSet.toList()) ?: notifyDataSetChanged()
+    fun setItems(items: List<T>) {
+        mutableItems.clear()
+        mutableItems.addAll(items)
+        asyncListDiffer?.submitList(mutableItems.toList()) ?: notifyDataSetChanged()
     }
 
     private fun onListItemDragged(previousPosition: Int, newPosition: Int) {
@@ -471,7 +471,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
 
         if (viewHolder.bindingAdapterPosition == NO_POSITION) return
 
-        val item = dataSet[viewHolder.bindingAdapterPosition]
+        val item = items[viewHolder.bindingAdapterPosition]
         onDragStarted(item, viewHolder)
     }
 
@@ -481,7 +481,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         if (viewHolder.bindingAdapterPosition == NO_POSITION)
             return
 
-        val item = dataSet[viewHolder.bindingAdapterPosition]
+        val item = items[viewHolder.bindingAdapterPosition]
 
         onSwipeStarted(item, viewHolder)
     }
@@ -492,7 +492,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
         if (viewHolder.bindingAdapterPosition == NO_POSITION)
             return
 
-        val item = dataSet[viewHolder.bindingAdapterPosition]
+        val item = items[viewHolder.bindingAdapterPosition]
 
         onDragFinished(item, viewHolder)
     }
@@ -535,7 +535,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     ) {
 
         val currentAdapterPosition = viewHolder.bindingAdapterPosition
-        val item = if (currentAdapterPosition != NO_POSITION) dataSet[currentAdapterPosition] else null
+        val item = if (currentAdapterPosition != NO_POSITION) items[currentAdapterPosition] else null
 
         drawOnSwiping(offsetX, offsetY, viewHolder, canvasUnder, canvasOver)
         onIsSwiping(item, viewHolder, offsetX, offsetY, canvasUnder, canvasOver, isUserControlled)
@@ -551,7 +551,7 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     ) {
 
         val currentAdapterPosition = viewHolder.bindingAdapterPosition
-        val item = if (currentAdapterPosition != NO_POSITION) dataSet[currentAdapterPosition] else null
+        val item = if (currentAdapterPosition != NO_POSITION) items[currentAdapterPosition] else null
 
         drawOnDragging(canvasOver, viewHolder)
         onIsDragging(item, viewHolder, offsetX, offsetY, canvasUnder, canvasOver, isUserControlled)
