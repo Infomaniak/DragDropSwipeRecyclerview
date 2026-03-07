@@ -447,6 +447,8 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     }
 
     fun moveItem(previousPosition: Int, newPosition: Int) {
+        if (previousPosition > mutableItems.lastIndex) return
+
         val item = mutableItems[previousPosition]
         mutableItems.removeAt(previousPosition)
         mutableItems.add(newPosition, item)
@@ -454,6 +456,8 @@ abstract class DragDropSwipeAdapter<T, U : DragDropSwipeAdapter.ViewHolder>(
     }
 
     fun removeItem(position: Int) {
+        if (position > mutableItems.lastIndex) return
+
         mutableItems.removeAt(position)
         asyncListDiffer?.submitList(mutableItems.toList()) ?: notifyItemRemoved(position)
     }
